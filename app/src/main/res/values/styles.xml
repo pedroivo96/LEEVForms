@@ -1,0 +1,52 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/secondaryColor</item>
+        <item name="colorPrimaryDark">@color/secondaryDarkColor</item>
+        <item name="colorAccent">@color/primaryColor</item>
+    </style>
+
+    <style name="AppThemeNoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/secondaryColor</item>
+        <item name="colorPrimaryDark">@color/secondaryDarkColor</item>
+        <item name="colorAccent">@color/primaryColor</item>
+    </style>
+
+    <style name="error" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/errorColor</item> <!--apply the color you wat here -->
+        <item name="android:textSize">12dp</item>
+    </style>
+
+    <style name="EditTextTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorControlNormal">@color/primaryTextColorTransparent</item>
+        <item name="colorControlActivated">@color/primaryTextColor</item>
+        <item name="colorControlHighlight">@color/primaryTextColor</item>
+    </style>
+
+    <style name="MyDialogTheme" parent="ThemeOverlay.AppCompat.Dialog.Alert">
+        <item name="android:textColor">@color/primaryTextColor</item>
+        <item name="android:buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
+        <item name="android:buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
+    </style>
+
+    <style name="PositiveButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/primaryTextColor</item>
+    </style>
+    <style name="NegativeButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/primaryTextColorTransparent</item>
+    </style>
+
+    <style name="TextInputLayoutLabelGrey" parent="Widget.Design.TextInputLayout">
+        <!-- Hint color and label color in FALSE state -->
+        <item name="android:textColorHint">@color/primaryTextColorTransparent</item>
+        <item name="android:textColor">@color/primaryTextColor</item>
+        <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
+        <item name="colorAccent">@color/secondaryColor</item>
+        <item name="colorControlNormal">@color/primaryTextColorTransparent</item>
+        <item name="colorControlActivated">@color/primaryTextColor</item>
+    </style>
+
+</resources>

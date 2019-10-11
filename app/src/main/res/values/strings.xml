@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">LEEV Forms</string>
+
+    <string name="app_font">casual</string>
+
+    <string name="open_drawer">Abrir</string>
+    <string name="close_drawer">Fechar</string>
+
+    <string-array name="user_types">
+        <item>Aluno</item>
+        <item>Professor</item>
+    </string-array>
+</resources>

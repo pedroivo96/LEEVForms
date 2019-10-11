@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group>
+        <item
+            android:id="@+id/nav_my_profile"
+            android:icon="@mipmap/ic_home_black"
+            android:title="Meu perfil"/>
+        <item
+            android:id="@+id/nav_see_advisor"
+            android:icon="@mipmap/ic_school_black"
+            android:title="Ver orientador"/>
+        <item
+            android:id="@+id/nav_leev_teachers"
+            android:icon="@mipmap/ic_list_black"
+            android:title="Professores LEEV"/>
+        <item
+            android:id="@+id/nav_leev_students"
+            android:icon="@mipmap/ic_list_black"
+            android:title="Alunos LEEV"/>
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@mipmap/ic_exit_outlined_black"
+            android:title="Sair"/>
+    </group>
+</menu>
+
