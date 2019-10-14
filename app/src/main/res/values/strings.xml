@@ -10,4 +10,10 @@
         <item>Aluno</item>
         <item>Professor</item>
     </string-array>
+
+    <string-array name="question_types">
+        <item>Subjetiva</item>
+        <item>Objetiva(resposta única)</item>
+        <item>Objetiva(múltiplas respostas)</item>
+    </string-array>
 </resources>

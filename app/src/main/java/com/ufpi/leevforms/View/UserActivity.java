@@ -70,7 +70,7 @@ public class UserActivity extends AppCompatActivity {
                 .child(ConstantUtils.DATABASE_ACTUAL_BRANCH)
                 .child(ConstantUtils.FREQUENCIES_BRANCH);
 
-        prefs = getSharedPreferences("com.ufpi.leevforms", MODE_PRIVATE);
+        prefs = getSharedPreferences(ConstantUtils.APPLICATION_ID, MODE_PRIVATE);
 
         tUserId = findViewById(R.id.tUserId);
         tUserName = findViewById(R.id.tUserName);
@@ -233,37 +233,6 @@ public class UserActivity extends AppCompatActivity {
         // show it
         alertDialog.show();
 
-    }
-
-    private ValueEventListener verifyAndRegisterFrequenciesListener(final Date time){
-        return new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
-                    //Já existe um registro de frequência nesse dia
-
-                    Log.i("TAG", "O usuário atualmente logado já possui um registro de frequência hoje");
-                }
-                else{
-
-                    DatabaseReference elementReference = mDatabaseFrequencies
-                            .child(prefs.getString(ConstantUtils.USER_FIELD_ID,""))
-                            .push();
-                    String id = elementReference.getKey();
-
-                    mDatabaseFrequencies
-                            .child(prefs.getString(ConstantUtils.USER_FIELD_ID,""))
-                            .child(id)
-                            .child(ConstantUtils.FREQUENCY_FIELD_DATE)
-                            .setValue(time.getTime());
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        };
     }
 
     private void updateField(String field, String updateInformation){

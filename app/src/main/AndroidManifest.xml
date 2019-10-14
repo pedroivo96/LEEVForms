@@ -9,9 +9,24 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".View.ForgetPasswordActivity"></activity>
-        <activity android:name=".View.UserActivity" />
-        <activity android:name=".View.LoginActivity" />
+        <activity
+            android:name=".View.FormActivity"
+            android:theme="@style/AppThemeNoActionBar"></activity>
+        <activity
+            android:name=".View.MyFormsActivity"
+            android:theme="@style/AppThemeNoActionBar" />
+        <activity
+            android:name=".View.FormRegisterActivity"
+            android:theme="@style/AppThemeNoActionBar" />
+        <activity
+            android:name=".View.ForgetPasswordActivity"
+            android:theme="@style/AppThemeNoActionBar" />
+        <activity
+            android:name=".View.UserActivity"
+            android:theme="@style/AppThemeNoActionBar" />
+        <activity
+            android:name=".View.LoginActivity"
+            android:theme="@style/AppThemeNoActionBar" />
         <activity android:name=".View.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

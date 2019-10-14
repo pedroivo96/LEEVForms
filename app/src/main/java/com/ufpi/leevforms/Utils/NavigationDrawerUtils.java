@@ -2,12 +2,16 @@ package com.ufpi.leevforms.Utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.MenuItem;
 
+import com.ufpi.leevforms.R;
+import com.ufpi.leevforms.View.FormRegisterActivity;
+import com.ufpi.leevforms.View.MyFormsActivity;
 import com.ufpi.leevforms.View.UserActivity;
 
 public class NavigationDrawerUtils {
@@ -28,6 +32,27 @@ public class NavigationDrawerUtils {
                     //É um professor
                     switch (item.getItemId()) {
 
+                        case R.id.nav_my_profile: {
+                            if(! (context instanceof UserActivity)) {
+                                Intent intent = new Intent(context, UserActivity.class);
+                                context.startActivity(intent);
+                                finishCurrentActivity();
+                            }
+                            break;
+                        }
+
+                        case R.id.nav_form_register:{
+                            Intent intent = new Intent(context, FormRegisterActivity.class);
+                            context.startActivity(intent);
+                            break;
+                        }
+
+                        case R.id.nav_my_forms:{
+                            Intent intent = new Intent(context, MyFormsActivity.class);
+                            context.startActivity(intent);
+                            break;
+                        }
+
                         default: {
                             //Toast.makeText(this, "Menu Default", Toast.LENGTH_SHORT).show();
                             break;
@@ -39,6 +64,26 @@ public class NavigationDrawerUtils {
                     //É um aluno
                     switch (item.getItemId()) {
 
+                        case R.id.nav_my_profile: {
+                            if(! (context instanceof UserActivity)) {
+                                Intent intent = new Intent(context, UserActivity.class);
+                                context.startActivity(intent);
+                                finishCurrentActivity();
+                            }
+                            break;
+                        }
+
+                        case R.id.nav_form_register:{
+                            Intent intent = new Intent(context, FormRegisterActivity.class);
+                            context.startActivity(intent);
+                            break;
+                        }
+
+                        case R.id.nav_my_forms:{
+                            Intent intent = new Intent(context, MyFormsActivity.class);
+                            context.startActivity(intent);
+                            break;
+                        }
 
                         default: {
                             //Toast.makeText(this, "Menu Default", Toast.LENGTH_SHORT).show();
