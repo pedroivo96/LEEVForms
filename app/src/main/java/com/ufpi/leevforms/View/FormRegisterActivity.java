@@ -170,10 +170,10 @@ public class FormRegisterActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.add_question) {
+        if (id == R.id.addQuestion) {
             createAndShowNewQuestionDialog();
         }
-        if (id == R.id.form_register) {
+        if (id == R.id.formRegister) {
             finalizeFormRegister();
         }
 

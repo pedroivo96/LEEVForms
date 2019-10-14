@@ -34,7 +34,7 @@ import com.ufpi.leevforms.Utils.NavigationDrawerUtils;
 
 import java.util.ArrayList;
 
-public class FormActivity extends AppCompatActivity {
+public class AnswerRegisterActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
@@ -43,9 +43,6 @@ public class FormActivity extends AppCompatActivity {
     private DatabaseReference mDatabaseForms;
     private String id;
 
-    private TextView tName;
-    private TextView tDescription;
-    private TextView tCreationDate;
     private ListView lQuestions;
 
     private Form form;
@@ -55,11 +52,8 @@ public class FormActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_form);
+        setContentView(R.layout.activity_answer_register);
 
-        tName = findViewById(R.id.tName);
-        tDescription = findViewById(R.id.tDescription);
-        tCreationDate = findViewById(R.id.tCreationDate);
         lQuestions = findViewById(R.id.lQuestions);
 
         id = getIntent().getStringExtra(ConstantUtils.FORMS_FIELD_ID);
@@ -92,10 +86,6 @@ public class FormActivity extends AppCompatActivity {
                         form.setName((String) d.child(ConstantUtils.FORMS_FIELD_NAME).getValue());
                         form.setDescription((String) d.child(ConstantUtils.FORMS_FIELD_DESCRIPTION).getValue());
                         form.setCreationDate((Long) d.child(ConstantUtils.FORMS_FIELD_CREATIONDATE).getValue());
-
-                        tName.setText(form.getName());
-                        tDescription.setText(form.getDescription());
-                        tCreationDate.setText(DateTimeUtils.getDateTimeFromTimeStamp(form.getCreationDate(), DateTimeUtils.DATE_FORMAT_4));
 
                         mDatabaseForms
                                 .child(prefs.getString(ConstantUtils.USER_FIELD_ID,""))
@@ -203,7 +193,7 @@ public class FormActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_toolbar_form, menu);
+        getMenuInflater().inflate(R.menu.menu_answer_register, menu);
         return true;
     }
 
@@ -212,14 +202,10 @@ public class FormActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.newAnswer) {
+        if (id == R.id.answerRegister) {
 
-            Intent intent = new Intent(getContext(), AnswerRegisterActivity.class);
-            intent.putExtra(ConstantUtils.FORMS_FIELD_ID, id);
-            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);
     }
-
 }

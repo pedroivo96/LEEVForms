@@ -9,9 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".View.AnswerRegisterActivity"></activity>
         <activity
             android:name=".View.FormActivity"
-            android:theme="@style/AppThemeNoActionBar"></activity>
+            android:theme="@style/AppThemeNoActionBar" />
         <activity
             android:name=".View.MyFormsActivity"
             android:theme="@style/AppThemeNoActionBar" />
