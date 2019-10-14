@@ -9,7 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".View.AnswerRegisterActivity"></activity>
+
+        <activity
+            android:name=".View.AnswerRegisterActivity"
+            android:theme="@style/AppThemeNoActionBar"
+            android:windowSoftInputMode="adjustPan"></activity>
         <activity
             android:name=".View.FormActivity"
             android:theme="@style/AppThemeNoActionBar" />

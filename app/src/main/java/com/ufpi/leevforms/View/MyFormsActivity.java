@@ -62,6 +62,8 @@ public class MyFormsActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+                Log.i("TAG", "ID do Form selecionado :"+forms.get(position).getId());
+
                 Intent intent = new Intent(getContext(), FormActivity.class);
                 intent.putExtra(ConstantUtils.FORMS_FIELD_ID, forms.get(position).getId());
                 startActivity(intent);

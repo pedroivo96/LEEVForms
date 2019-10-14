@@ -13,6 +13,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +25,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.ufpi.leevforms.Adapter.QuestionAnswerAdapter;
 import com.ufpi.leevforms.Adapter.QuestionsAdapter;
 import com.ufpi.leevforms.Model.Form;
 import com.ufpi.leevforms.Model.Question;
@@ -55,8 +57,11 @@ public class AnswerRegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_answer_register);
 
         lQuestions = findViewById(R.id.lQuestions);
+        lQuestions.setItemsCanFocus(true);
 
         id = getIntent().getStringExtra(ConstantUtils.FORMS_FIELD_ID);
+        Log.i("TAG", "Depois de mudar de intent :"+id);
+
         mDatabaseForms = FirebaseDatabase.getInstance().getReference()
                 .child(ConstantUtils.DATABASE_ACTUAL_BRANCH)
                 .child(ConstantUtils.FORMS_BRANCH);
@@ -107,10 +112,11 @@ public class AnswerRegisterActivity extends AppCompatActivity {
         return new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
                 if(dataSnapshot.exists()){
 
                     questions = new ArrayList<>();
-                    QuestionsAdapter questionsAdapter;
+                    QuestionAnswerAdapter questionsAdapter;
 
                     for(DataSnapshot d : dataSnapshot.getChildren()){
 
@@ -123,7 +129,7 @@ public class AnswerRegisterActivity extends AppCompatActivity {
                         questions.add(question);
                     }
 
-                    questionsAdapter = new QuestionsAdapter(questions, getContext());
+                    questionsAdapter = new QuestionAnswerAdapter(questions, getContext());
                     lQuestions.setAdapter(questionsAdapter);
                     questionsAdapter.notifyDataSetChanged();
                 }
@@ -202,8 +208,14 @@ public class AnswerRegisterActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.answerRegister) {
+        if (id == R.id.finalizeAnswerRegister) {
 
+            for(Question question : questions){
+
+                for(String answer : question.getAnswers()){
+                    Log.i("TAG", "Resposta da questão "+question.getId()+": "+answer);
+                }
+            }
         }
 
         return super.onOptionsItemSelected(item);

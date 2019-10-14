@@ -8,9 +8,11 @@ public class Question {
     private String description;
     private int type;
     private ArrayList<String> options;
+    private ArrayList<String> answers;
 
     public Question(){
         options = new ArrayList<>();
+        answers = new ArrayList<>();
     }
 
     public String getId() {
@@ -43,5 +45,13 @@ public class Question {
 
     public void setOptions(ArrayList<String> options) {
         this.options = options;
+    }
+
+    public ArrayList<String> getAnswers() {
+        return answers;
+    }
+
+    public void setAnswers(ArrayList<String> answers) {
+        this.answers = answers;
     }
 }

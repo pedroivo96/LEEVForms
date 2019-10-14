@@ -13,6 +13,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,7 +42,7 @@ public class FormActivity extends AppCompatActivity {
     private NavigationView navigationView;
     private SharedPreferences prefs = null;
     private DatabaseReference mDatabaseForms;
-    private String id;
+    private String idForm;
 
     private TextView tName;
     private TextView tDescription;
@@ -62,7 +63,9 @@ public class FormActivity extends AppCompatActivity {
         tCreationDate = findViewById(R.id.tCreationDate);
         lQuestions = findViewById(R.id.lQuestions);
 
-        id = getIntent().getStringExtra(ConstantUtils.FORMS_FIELD_ID);
+        idForm = getIntent().getStringExtra(ConstantUtils.FORMS_FIELD_ID);
+        Log.i("TAG", "Depois de selecionar o Form :"+idForm);
+
         mDatabaseForms = FirebaseDatabase.getInstance().getReference()
                 .child(ConstantUtils.DATABASE_ACTUAL_BRANCH)
                 .child(ConstantUtils.FORMS_BRANCH);
@@ -74,7 +77,7 @@ public class FormActivity extends AppCompatActivity {
         mDatabaseForms
                 .child(prefs.getString(ConstantUtils.USER_FIELD_ID,""))
                 .orderByKey()
-                .equalTo(id)
+                .equalTo(idForm)
                 .addListenerForSingleValueEvent(getFormInformations());
     }
 
@@ -215,7 +218,7 @@ public class FormActivity extends AppCompatActivity {
         if (id == R.id.newAnswer) {
 
             Intent intent = new Intent(getContext(), AnswerRegisterActivity.class);
-            intent.putExtra(ConstantUtils.FORMS_FIELD_ID, id);
+            intent.putExtra(ConstantUtils.FORMS_FIELD_ID, idForm);
             startActivity(intent);
         }
 
