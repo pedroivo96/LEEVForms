@@ -221,6 +221,12 @@ public class FormActivity extends AppCompatActivity {
             intent.putExtra(ConstantUtils.FORMS_FIELD_ID, idForm);
             startActivity(intent);
         }
+        if(id == R.id.formAnswers){
+
+            Intent intent = new Intent(getContext(), FormListAnswersActivity.class);
+            intent.putExtra(ConstantUtils.FORMS_FIELD_ID, idForm);
+            startActivity(intent);
+        }
 
         return super.onOptionsItemSelected(item);
     }

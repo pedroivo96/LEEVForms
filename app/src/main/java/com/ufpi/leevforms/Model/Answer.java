@@ -1,23 +1,16 @@
 package com.ufpi.leevforms.Model;
 
-public class Form {
+import java.util.ArrayList;
 
+public class Answer {
     private String id;
     private String description;
-    private String name;
     private long creationDate;
-    private boolean isVisible;
+
+    private ArrayList<QuestionAnswer> questionAnswers;
 
     public String getId() {
         return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public void setId(String id) {
@@ -40,11 +33,11 @@ public class Form {
         this.creationDate = creationDate;
     }
 
-    public boolean isVisible() {
-        return isVisible;
+    public ArrayList<QuestionAnswer> getQuestionAnswers() {
+        return questionAnswers;
     }
 
-    public void setVisible(boolean visible) {
-        isVisible = visible;
+    public void setQuestionAnswers(ArrayList<QuestionAnswer> questionAnswers) {
+        this.questionAnswers = questionAnswers;
     }
 }

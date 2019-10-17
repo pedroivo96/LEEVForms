@@ -282,6 +282,7 @@ public class FormRegisterActivity extends AppCompatActivity {
         elementReference.child(ConstantUtils.FORMS_FIELD_NAME).setValue(eName.getText().toString());
         elementReference.child(ConstantUtils.FORMS_FIELD_DESCRIPTION).setValue(eDescription.getText().toString());
         elementReference.child(ConstantUtils.FORMS_FIELD_CREATIONDATE).setValue(Calendar.getInstance().getTime().getTime());
+        elementReference.child(ConstantUtils.FORMS_FIELD_VISIBLE).setValue(true);
 
         Log.i("TAG", DateTimeUtils.getDateTimeFromTimeStamp(Calendar.getInstance().getTime().getTime(), DateTimeUtils.DATE_FORMAT_8));
 
@@ -362,9 +363,10 @@ public class FormRegisterActivity extends AppCompatActivity {
 
                 switch (which){
                     case 0:
-
                         //Remover
                         questions.remove(position);
+                        questionsAdapter.notifyDataSetChanged();
+
                         break;
                     case 1:
 

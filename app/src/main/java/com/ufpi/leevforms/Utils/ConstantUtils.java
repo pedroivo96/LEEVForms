@@ -30,6 +30,7 @@ public class ConstantUtils {
 
     public static final String FORMS_BRANCH = "forms";
     public static final String FORMS_FIELD_ID = "id";
+    public static final String FORMS_FIELD_VISIBLE = "isVisible";
     public static final String FORMS_FIELD_NAME = "name";
     public static final String FORMS_FIELD_DESCRIPTION = "description";
     public static final String FORMS_FIELD_CREATIONDATE = "creationDate";
@@ -46,5 +47,7 @@ public class ConstantUtils {
 
     public static final String ANSWERS_BRANCH = "answers";
     public static final String ANSWERS_FIELD_ID = "id";
+    public static final String ANSWERS_FIELD_QUESTIONANSWERS = "questionAnswers";
     public static final String ANSWERS_FIELD_DESCRIPTION = "description";
+    public static final String ANSWERS_FIELD_CREATIONDATE = "creationDate";
 }

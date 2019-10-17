@@ -1,7 +1,6 @@
 package com.ufpi.leevforms.View;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
@@ -13,9 +12,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -25,80 +21,90 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.ufpi.leevforms.Adapter.QuestionAnswerAdapter;
-import com.ufpi.leevforms.Adapter.QuestionsAdapter;
-import com.ufpi.leevforms.Model.Form;
-import com.ufpi.leevforms.Model.Question;
+import com.ufpi.leevforms.Adapter.QuestionAnswerAdapter1;
+import com.ufpi.leevforms.Model.Answer;
+import com.ufpi.leevforms.Model.QuestionAnswer;
 import com.ufpi.leevforms.R;
 import com.ufpi.leevforms.Utils.ConstantUtils;
 import com.ufpi.leevforms.Utils.DateTimeUtils;
 import com.ufpi.leevforms.Utils.NavigationDrawerUtils;
 
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.HashMap;
 
-public class AnswerRegisterActivity extends AppCompatActivity {
+public class AnswerActivity extends AppCompatActivity {
+
+    private ArrayList<QuestionAnswer> questionAnswers;
+
+    private TextView tAnswerDescription;
+    private TextView tAnswerCreationDate;
+    private ListView lQuestionAnswers;
 
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
+
     private SharedPreferences prefs = null;
+
+    private String answerId;
+    private String formId;
+
+    private Answer answer;
+
+    private HashMap<String, String> questionsDescriptions;
+
     private DatabaseReference mDatabaseForms;
-    private String id;
-
-    private ListView lQuestions;
-
-    private Form form;
-
-    private ArrayList<Question> questions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_answer_register);
+        setContentView(R.layout.activity_answer);
 
-        lQuestions = findViewById(R.id.lQuestions);
-        lQuestions.setItemsCanFocus(true);
+        tAnswerDescription = findViewById(R.id.tAnswerDescription);
+        tAnswerCreationDate = findViewById(R.id.tAnswerCreationDate);
+        lQuestionAnswers = findViewById(R.id.lQuestionAnswers);
 
-        id = getIntent().getStringExtra(ConstantUtils.FORMS_FIELD_ID);
-        Log.i("TAG", "Depois de mudar de intent :"+id);
+        questionAnswers = new ArrayList<>();
+        questionsDescriptions = new HashMap<>();
 
-        mDatabaseForms = FirebaseDatabase.getInstance().getReference()
-                .child(ConstantUtils.DATABASE_ACTUAL_BRANCH)
-                .child(ConstantUtils.FORMS_BRANCH);
+        answerId = getIntent().getStringExtra("answerId");
+        formId = getIntent().getStringExtra("formId");
 
         prefs = getSharedPreferences(ConstantUtils.APPLICATION_ID, MODE_PRIVATE);
 
         configureNavigationDrawer();
 
+        mDatabaseForms = FirebaseDatabase.getInstance().getReference()
+                .child(ConstantUtils.DATABASE_ACTUAL_BRANCH)
+                .child(ConstantUtils.FORMS_BRANCH);
+
         mDatabaseForms
-                .child(prefs.getString(ConstantUtils.USER_FIELD_ID,""))
+                .child(prefs.getString(ConstantUtils.USER_FIELD_ID, ""))
+                .child(formId)
+                .child(ConstantUtils.ANSWERS_BRANCH)
                 .orderByKey()
-                .equalTo(id)
-                .addListenerForSingleValueEvent(getFormInformations());
+                .equalTo(answerId)
+                .addListenerForSingleValueEvent(getAnswerInformations());
+
     }
 
-    private ValueEventListener getFormInformations() {
+    private ValueEventListener getAnswerInformations() {
         return new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
                 if(dataSnapshot.exists()){
                     for(DataSnapshot d : dataSnapshot.getChildren()){
 
-                        form = new Form();
+                        tAnswerDescription.setText(d.child(ConstantUtils.ANSWERS_FIELD_DESCRIPTION).getValue(String.class));
+                        tAnswerCreationDate.setText(DateTimeUtils.getDateTimeFromTimeStamp(d.child(ConstantUtils.ANSWERS_FIELD_CREATIONDATE).getValue(Long.class), DateTimeUtils.DATE_FORMAT_4));
 
-                        form.setId(d.getKey());
-                        form.setName((String) d.child(ConstantUtils.FORMS_FIELD_NAME).getValue());
-                        form.setDescription((String) d.child(ConstantUtils.FORMS_FIELD_DESCRIPTION).getValue());
-                        form.setCreationDate((Long) d.child(ConstantUtils.FORMS_FIELD_CREATIONDATE).getValue());
-
-                        mDatabaseForms
-                                .child(prefs.getString(ConstantUtils.USER_FIELD_ID,""))
-                                .child(form.getId())
-                                .child(ConstantUtils.QUESTIONS_BRANCH)
-                                .addListenerForSingleValueEvent(getFormQuestions());
                     }
+
+                    mDatabaseForms
+                            .child(prefs.getString(ConstantUtils.USER_FIELD_ID, ""))
+                            .child(formId)
+                            .child(ConstantUtils.QUESTIONS_BRANCH)
+                            .addListenerForSingleValueEvent(getQuestionsDescriptions());
                 }
             }
 
@@ -109,30 +115,54 @@ public class AnswerRegisterActivity extends AppCompatActivity {
         };
     }
 
-    private ValueEventListener getFormQuestions() {
+    private ValueEventListener getQuestionsDescriptions() {
         return new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
                 if(dataSnapshot.exists()){
-
-                    questions = new ArrayList<>();
-                    QuestionAnswerAdapter questionsAdapter;
-
                     for(DataSnapshot d : dataSnapshot.getChildren()){
 
-                        Question question = new Question();
-                        question.setId(d.getKey());
-                        question.setDescription((String) d.child(ConstantUtils.QUESTIONS_FIELD_DESCRIPTION).getValue());
-                        question.setType(d.child(ConstantUtils.QUESTIONS_FIELD_TYPE).getValue(Integer.class));
-                        question.setOptions((ArrayList<String>) d.child(ConstantUtils.QUESTIONS_FIELD_ANSWEROPTIONS).getValue());
+                        questionsDescriptions.put(d.getKey(), d.child(ConstantUtils.QUESTIONS_FIELD_DESCRIPTION).getValue(String.class));
 
-                        questions.add(question);
                     }
 
-                    questionsAdapter = new QuestionAnswerAdapter(questions, getContext());
-                    lQuestions.setAdapter(questionsAdapter);
-                    questionsAdapter.notifyDataSetChanged();
+                    //Obter as respostas associadas a cada uma das questões
+                    mDatabaseForms
+                            .child(prefs.getString(ConstantUtils.USER_FIELD_ID, ""))
+                            .child(formId)
+                            .child(ConstantUtils.ANSWERS_BRANCH)
+                            .child(answerId)
+                            .child(ConstantUtils.ANSWERS_FIELD_QUESTIONANSWERS)
+                            .addListenerForSingleValueEvent(getQuestionAnswers());
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+    }
+
+    private ValueEventListener getQuestionAnswers() {
+        return new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    for(DataSnapshot d : dataSnapshot.getChildren()){
+
+                        QuestionAnswer questionAnswer = new QuestionAnswer();
+                        questionAnswer.setIdQuestion(d.getKey());
+                        questionAnswer.setDescription(d.child(ConstantUtils.ANSWERS_FIELD_DESCRIPTION).getValue(String.class));
+                        questionAnswer.setQuestionDescription(questionsDescriptions.get(d.getKey()));
+
+                        questionAnswers.add(questionAnswer);
+                    }
+
+                    QuestionAnswerAdapter1 questionAnswerAdapter1 = new QuestionAnswerAdapter1(questionAnswers, getContext());
+                    lQuestionAnswers.setAdapter(questionAnswerAdapter1);
+                    
                 }
             }
 
@@ -195,51 +225,6 @@ public class AnswerRegisterActivity extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(
                 NavigationDrawerUtils.getNavigationDrawerItemSelectedListener(getContext(),
                         prefs.getInt(ConstantUtils.USER_FIELD_USERTYPE,-1), drawerLayout));
-
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_answer_register, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.finalizeAnswerRegister) {
-
-            for(Question question : questions){
-
-                for(String answer : question.getAnswers()){
-                    Log.i("TAG", "Resposta da questão "+question.getId()+": "+answer);
-                }
-            }
-            registerFormAnswer();
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void registerFormAnswer(){
-
-        DatabaseReference elementReference = mDatabaseForms
-                .child(prefs.getString(ConstantUtils.USER_FIELD_ID,""))
-                .child(form.getId())
-                .child(ConstantUtils.ANSWERS_BRANCH)
-                .push();
-
-        elementReference.child(ConstantUtils.ANSWERS_FIELD_CREATIONDATE).setValue(Calendar.getInstance().getTime().getTime());
-
-        for(Question question : questions){
-            elementReference
-                    .child(ConstantUtils.ANSWERS_FIELD_QUESTIONANSWERS)
-                    .child(question.getId())
-                    .child(ConstantUtils.ANSWERS_FIELD_DESCRIPTION)
-                    .setValue(question.getAnswers());
-        }
 
     }
 }

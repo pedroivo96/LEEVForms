@@ -6,4 +6,9 @@
         android:title="Cadastrar resposta"
         android:icon="@mipmap/ic_assignment_white"
         app:showAsAction="always"/>
+    <item
+        android:id="@+id/formAnswers"
+        android:title="Respostas do formulário"
+        android:icon="@mipmap/ic_list_white"
+        app:showAsAction="always"/>
 </menu>
