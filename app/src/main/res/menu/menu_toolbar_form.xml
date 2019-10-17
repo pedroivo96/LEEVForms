@@ -5,10 +5,15 @@
         android:id="@+id/newAnswer"
         android:title="Cadastrar resposta"
         android:icon="@mipmap/ic_assignment_white"
-        app:showAsAction="always"/>
+        app:showAsAction="never"/>
     <item
         android:id="@+id/formAnswers"
         android:title="Respostas do formulário"
         android:icon="@mipmap/ic_list_white"
-        app:showAsAction="always"/>
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/formStatistics"
+        android:title="Estatísticas"
+        android:icon="@mipmap/ic_trending_up_white"
+        app:showAsAction="never"/>
 </menu>

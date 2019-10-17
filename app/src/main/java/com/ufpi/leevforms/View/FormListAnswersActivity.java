@@ -79,8 +79,8 @@ public class FormListAnswersActivity extends AppCompatActivity {
 
         mDatabaseForms
                 .child(prefs.getString(ConstantUtils.USER_FIELD_ID, ""))
-                .orderByKey()
-                .equalTo(formId)
+                .child(formId)
+                .child(ConstantUtils.ANSWERS_BRANCH)
                 .addListenerForSingleValueEvent(getFormInformations());
     }
 

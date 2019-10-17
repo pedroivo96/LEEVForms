@@ -1,9 +1,13 @@
 package com.ufpi.leevforms.Model;
 
+import android.widget.ArrayAdapter;
+
+import java.util.ArrayList;
+
 public class QuestionAnswer {
     private String idQuestion;
     private String questionDescription;
-    private String description;
+    private ArrayList<String> description;
 
     public String getIdQuestion() {
         return idQuestion;
@@ -21,11 +25,11 @@ public class QuestionAnswer {
         this.questionDescription = questionDescription;
     }
 
-    public String getDescription() {
+    public ArrayList<String> getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(ArrayList<String> description) {
         this.description = description;
     }
 }

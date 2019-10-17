@@ -43,7 +43,7 @@ public class AnswerAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view1 = inflater.inflate(R.layout.form_without_remove_item_listview, parent, false);
+        View view1 = inflater.inflate(R.layout.answer_without_remove_item_listview, parent, false);
 
         Answer answer = answers.get(position);
 

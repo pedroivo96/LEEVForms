@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -17,6 +18,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -52,12 +54,18 @@ public class AnswerRegisterActivity extends AppCompatActivity {
 
     private ArrayList<Question> questions;
 
+    private TextInputLayout textInputLayoutDescription;
+    private EditText eDescription;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_answer_register);
 
         lQuestions = findViewById(R.id.lQuestions);
+        textInputLayoutDescription = findViewById(R.id.textInputLayoutDescription);
+        eDescription = findViewById(R.id.eDescription);
+
         lQuestions.setItemsCanFocus(true);
 
         id = getIntent().getStringExtra(ConstantUtils.FORMS_FIELD_ID);
@@ -232,7 +240,7 @@ public class AnswerRegisterActivity extends AppCompatActivity {
                 .push();
 
         elementReference.child(ConstantUtils.ANSWERS_FIELD_CREATIONDATE).setValue(Calendar.getInstance().getTime().getTime());
-
+        elementReference.child(ConstantUtils.ANSWERS_FIELD_DESCRIPTION).setValue(eDescription.getText().toString());
         for(Question question : questions){
             elementReference
                     .child(ConstantUtils.ANSWERS_FIELD_QUESTIONANSWERS)

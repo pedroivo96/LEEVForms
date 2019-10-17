@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/secondaryColor</item>
         <item name="colorPrimaryDark">@color/secondaryDarkColor</item>
         <item name="colorAccent">@color/primaryColor</item>
+        <item name="android:actionOverflowButtonStyle">@style/AppTheme.OverFlow</item>
     </style>
 
     <style name="AppThemeNoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
@@ -13,6 +14,11 @@
         <item name="colorPrimary">@color/secondaryColor</item>
         <item name="colorPrimaryDark">@color/secondaryDarkColor</item>
         <item name="colorAccent">@color/primaryColor</item>
+        <item name="android:actionOverflowButtonStyle">@style/AppTheme.OverFlow</item>
+    </style>
+
+    <style name="AppTheme.OverFlow">
+        <item name="android:src">@mipmap/ic_more_ver_white</item>
     </style>
 
     <style name="error" parent="@android:style/TextAppearance">

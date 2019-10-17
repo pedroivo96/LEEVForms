@@ -227,6 +227,9 @@ public class FormActivity extends AppCompatActivity {
             intent.putExtra(ConstantUtils.FORMS_FIELD_ID, idForm);
             startActivity(intent);
         }
+        if(id == R.id.formStatistics){
+
+        }
 
         return super.onOptionsItemSelected(item);
     }

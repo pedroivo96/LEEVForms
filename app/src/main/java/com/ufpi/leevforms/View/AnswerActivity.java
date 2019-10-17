@@ -154,7 +154,7 @@ public class AnswerActivity extends AppCompatActivity {
 
                         QuestionAnswer questionAnswer = new QuestionAnswer();
                         questionAnswer.setIdQuestion(d.getKey());
-                        questionAnswer.setDescription(d.child(ConstantUtils.ANSWERS_FIELD_DESCRIPTION).getValue(String.class));
+                        questionAnswer.setDescription((ArrayList<String>) d.child(ConstantUtils.ANSWERS_FIELD_DESCRIPTION).getValue());
                         questionAnswer.setQuestionDescription(questionsDescriptions.get(d.getKey()));
 
                         questionAnswers.add(questionAnswer);
@@ -162,7 +162,7 @@ public class AnswerActivity extends AppCompatActivity {
 
                     QuestionAnswerAdapter1 questionAnswerAdapter1 = new QuestionAnswerAdapter1(questionAnswers, getContext());
                     lQuestionAnswers.setAdapter(questionAnswerAdapter1);
-                    
+
                 }
             }
 
