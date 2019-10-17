@@ -9,10 +9,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <activity
+            android:name=".View.FormStatisticsActivity"
+            android:label="Estatísticas"
+            android:theme="@style/AppThemeNoActionBar"/>
         <activity
             android:name=".View.AnswerActivity"
             android:label="Dados de resposta"
-            android:theme="@style/AppThemeNoActionBar"/>
+            android:theme="@style/AppThemeNoActionBar" />
         <activity
             android:name=".View.FormListAnswersActivity"
             android:label="Lista de respostas"
@@ -35,8 +40,8 @@
             android:label="Cadastro de Formulário"
             android:theme="@style/AppThemeNoActionBar" />
         <activity
-            android:label="Esqueci minhas senha"
             android:name=".View.ForgetPasswordActivity"
+            android:label="Esqueci minhas senha"
             android:theme="@style/AppThemeNoActionBar" />
         <activity
             android:name=".View.UserActivity"

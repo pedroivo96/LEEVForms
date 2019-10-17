@@ -1,9 +1,9 @@
 package com.ufpi.leevforms.View;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.res.ResourcesCompat;
@@ -14,10 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -25,46 +22,33 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.ufpi.leevforms.Adapter.QuestionsAdapter;
-import com.ufpi.leevforms.Model.Form;
 import com.ufpi.leevforms.Model.Question;
 import com.ufpi.leevforms.R;
 import com.ufpi.leevforms.Utils.ConstantUtils;
-import com.ufpi.leevforms.Utils.DateTimeUtils;
 import com.ufpi.leevforms.Utils.NavigationDrawerUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
-public class FormActivity extends AppCompatActivity {
+public class FormStatisticsActivity extends AppCompatActivity {
+
+    private String idForm;
 
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private SharedPreferences prefs = null;
     private DatabaseReference mDatabaseForms;
-    private String idForm;
-
-    private TextView tName;
-    private TextView tDescription;
-    private TextView tCreationDate;
-    private ListView lQuestions;
-
-    private Form form;
 
     private ArrayList<Question> questions;
+    private HashMap<String, ArrayList<String>> questionAnswers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_form);
-
-        tName = findViewById(R.id.tName);
-        tDescription = findViewById(R.id.tDescription);
-        tCreationDate = findViewById(R.id.tCreationDate);
-        lQuestions = findViewById(R.id.lQuestions);
+        setContentView(R.layout.activity_form_statistics);
 
         idForm = getIntent().getStringExtra(ConstantUtils.FORMS_FIELD_ID);
-        Log.i("TAG", "Depois de selecionar o Form :"+idForm);
 
         mDatabaseForms = FirebaseDatabase.getInstance().getReference()
                 .child(ConstantUtils.DATABASE_ACTUAL_BRANCH)
@@ -74,71 +58,40 @@ public class FormActivity extends AppCompatActivity {
 
         configureNavigationDrawer();
 
+        questions = new ArrayList<>();
+        questionAnswers = new HashMap<>();
+
         mDatabaseForms
-                .child(prefs.getString(ConstantUtils.USER_FIELD_ID,""))
-                .orderByKey()
-                .equalTo(idForm)
-                .addListenerForSingleValueEvent(getFormInformations());
+                .child(prefs.getString(ConstantUtils.USER_FIELD_ID, ""))
+                .child(idForm)
+                .child(ConstantUtils.QUESTIONS_BRANCH)
+                .addListenerForSingleValueEvent(getQuestions());
     }
 
-    private ValueEventListener getFormInformations() {
-        return new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                if(dataSnapshot.exists()){
-                    for(DataSnapshot d : dataSnapshot.getChildren()){
-
-                        form = new Form();
-
-                        form.setId(d.getKey());
-                        form.setName((String) d.child(ConstantUtils.FORMS_FIELD_NAME).getValue());
-                        form.setDescription((String) d.child(ConstantUtils.FORMS_FIELD_DESCRIPTION).getValue());
-                        form.setCreationDate((Long) d.child(ConstantUtils.FORMS_FIELD_CREATIONDATE).getValue());
-
-                        tName.setText(form.getName());
-                        tDescription.setText(form.getDescription());
-                        tCreationDate.setText(DateTimeUtils.getDateTimeFromTimeStamp(form.getCreationDate(), DateTimeUtils.DATE_FORMAT_4));
-
-                        mDatabaseForms
-                                .child(prefs.getString(ConstantUtils.USER_FIELD_ID,""))
-                                .child(form.getId())
-                                .child(ConstantUtils.QUESTIONS_BRANCH)
-                                .addListenerForSingleValueEvent(getFormQuestions());
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        };
-    }
-
-    private ValueEventListener getFormQuestions() {
+    private ValueEventListener getQuestions() {
         return new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
-
-                    questions = new ArrayList<>();
-                    QuestionsAdapter questionsAdapter;
-
                     for(DataSnapshot d : dataSnapshot.getChildren()){
 
                         Question question = new Question();
                         question.setId(d.getKey());
-                        question.setDescription((String) d.child(ConstantUtils.QUESTIONS_FIELD_DESCRIPTION).getValue());
+                        question.setDescription(d.child(ConstantUtils.QUESTIONS_FIELD_DESCRIPTION).getValue(String.class));
                         question.setType(d.child(ConstantUtils.QUESTIONS_FIELD_TYPE).getValue(Integer.class));
-                        question.setOptions((ArrayList<String>) d.child(ConstantUtils.QUESTIONS_FIELD_ANSWEROPTIONS).getValue());
 
-                        questions.add(question);
+                        if(question.getType() != ConstantUtils.QUESTION_TYPE_SUBJETIVE){
+                            question.setOptions((ArrayList<String>) d.child(ConstantUtils.QUESTIONS_FIELD_ANSWEROPTIONS).getValue());
+                        }
+
+                        questionAnswers.put(question.getId(), new ArrayList<String>());
                     }
 
-                    questionsAdapter = new QuestionsAdapter(questions, getContext());
-                    lQuestions.setAdapter(questionsAdapter);
-                    questionsAdapter.notifyDataSetChanged();
+                    mDatabaseForms
+                            .child(prefs.getString(ConstantUtils.USER_FIELD_ID, ""))
+                            .child(idForm)
+                            .child(ConstantUtils.ANSWERS_BRANCH)
+                            .addValueEventListener(getFormAnswers());
                 }
             }
 
@@ -147,6 +100,47 @@ public class FormActivity extends AppCompatActivity {
 
             }
         };
+    }
+
+    private ValueEventListener getFormAnswers() {
+        return new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                if(dataSnapshot.exists()){
+
+                    for(DataSnapshot d : dataSnapshot.getChildren()){
+
+                        for(String questionId : questionAnswers.keySet()){
+
+                            ArrayList<String> answers = (ArrayList<String>) d
+                                    .child(ConstantUtils.ANSWERS_FIELD_QUESTIONANSWERS)
+                                    .child(questionId)
+                                    .child(ConstantUtils.ANSWERS_FIELD_DESCRIPTION)
+                                    .getValue();
+
+                            answers.addAll(questionAnswers.get(questionId));
+
+                            questionAnswers.put(questionId, answers);
+                        }
+                    }
+
+                    printOnLogQuestionAnswers();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+    }
+
+    private void printOnLogQuestionAnswers() {
+
+        for(String questionId : questionAnswers.keySet()){
+            Log.i("TAG", questionAnswers.get(questionId).toString());
+        }
     }
 
     private Context getContext(){
@@ -203,37 +197,4 @@ public class FormActivity extends AppCompatActivity {
                         prefs.getInt(ConstantUtils.USER_FIELD_USERTYPE,-1), drawerLayout));
 
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_toolbar_form, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.newAnswer) {
-
-            Intent intent = new Intent(getContext(), AnswerRegisterActivity.class);
-            intent.putExtra(ConstantUtils.FORMS_FIELD_ID, idForm);
-            startActivity(intent);
-        }
-        if(id == R.id.formAnswers){
-
-            Intent intent = new Intent(getContext(), FormListAnswersActivity.class);
-            intent.putExtra(ConstantUtils.FORMS_FIELD_ID, idForm);
-            startActivity(intent);
-        }
-        if(id == R.id.formStatistics){
-            Intent intent = new Intent(getContext(), FormStatisticsActivity.class);
-            intent.putExtra(ConstantUtils.FORMS_FIELD_ID, idForm);
-            startActivity(intent);
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
 }
