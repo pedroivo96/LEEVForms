@@ -6,6 +6,7 @@ public class Answer {
     private String id;
     private String description;
     private long creationDate;
+    private boolean isVisible;
 
     private ArrayList<QuestionAnswer> questionAnswers;
 
@@ -39,5 +40,13 @@ public class Answer {
 
     public void setQuestionAnswers(ArrayList<QuestionAnswer> questionAnswers) {
         this.questionAnswers = questionAnswers;
+    }
+
+    public boolean isVisible() {
+        return isVisible;
+    }
+
+    public void setVisible(boolean visible) {
+        isVisible = visible;
     }
 }

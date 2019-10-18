@@ -1,6 +1,8 @@
 package com.ufpi.leevforms.View;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.ColorSpace;
@@ -16,6 +18,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -32,6 +35,7 @@ import com.ufpi.leevforms.Utils.ConstantUtils;
 import com.ufpi.leevforms.Utils.NavigationDrawerUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class FormListAnswersActivity extends AppCompatActivity {
 
@@ -71,6 +75,15 @@ public class FormListAnswersActivity extends AppCompatActivity {
             }
         });
 
+        lAnswers.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                createAndShowFormsOptionsMenu(formId, answers.get(position).getId(), position);
+
+                return true;
+            }
+        });
+
         configureNavigationDrawer();
 
         mDatabaseForms = FirebaseDatabase.getInstance().getReference()
@@ -96,8 +109,11 @@ public class FormListAnswersActivity extends AppCompatActivity {
                         answer.setId(d.getKey());
                         answer.setDescription(d.child(ConstantUtils.ANSWERS_FIELD_DESCRIPTION).getValue(String.class));
                         answer.setCreationDate(d.child(ConstantUtils.ANSWERS_FIELD_CREATIONDATE).getValue(Long.class));
+                        answer.setVisible(d.child(ConstantUtils.ANSWERS_FIELD_VISIBLE).getValue(Boolean.class));
 
-                        answers.add(answer);
+                        if(answer.isVisible()){
+                            answers.add(answer);
+                        }
                     }
 
                     answerAdapter = new AnswerAdapter(answers, getContext());
@@ -165,5 +181,78 @@ public class FormListAnswersActivity extends AppCompatActivity {
                 NavigationDrawerUtils.getNavigationDrawerItemSelectedListener(getContext(),
                         prefs.getInt(ConstantUtils.USER_FIELD_USERTYPE,-1), drawerLayout));
 
+    }
+
+    private void createAndShowFormsOptionsMenu(final String formId, final String idAnswer, final int position){
+
+        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), R.layout.dialog_list_textview, R.id.textView1);
+        arrayAdapter.add("Remover");
+
+        AlertDialog.Builder builderSingle = new AlertDialog.Builder(getContext());
+        builderSingle.setIcon(null);
+        builderSingle.setTitle("Menu");
+
+        builderSingle.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                String strName = arrayAdapter.getItem(which);
+
+                switch (which){
+                    case 0:
+                        //Remover
+                        createAndShowRemoveFormDialog(formId, idAnswer, position);
+                        break;
+                }
+            }
+        });
+        builderSingle.show();
+    }
+
+    private void createAndShowRemoveFormDialog(final String formId, final String idAnswer, final int position){
+
+        AlertDialog alerta;
+
+        //Cria o gerador do AlertDialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        //define o titulo
+        builder.setTitle("Remoção");
+        //define a mensagem
+        builder.setMessage("Você realmente deseja remover esse aluno ?");
+        //define um botão como positivo
+        builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface arg0, int arg1) {
+                //Toast.makeText(getContext(), "positivo=" + arg1, Toast.LENGTH_SHORT).show();
+
+                HashMap<String, Object> result = new HashMap<>();
+                result.put(ConstantUtils.ANSWERS_FIELD_VISIBLE, false);
+
+                mDatabaseForms
+                        .child(prefs.getString(ConstantUtils.USER_FIELD_ID, ""))
+                        .child(formId)
+                        .child(ConstantUtils.ANSWERS_BRANCH)
+                        .child(idAnswer)
+                        .updateChildren(result);
+                //myStudents.remove(position);
+
+            }
+        });
+        //define um botão como negativo.
+        builder.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface arg0, int arg1) {
+                //Toast.makeText(getContext(), "negativo=" + arg1, Toast.LENGTH_SHORT).show();
+            }
+        });
+        //cria o AlertDialog
+        alerta = builder.create();
+        //Exibe
+        alerta.show();
     }
 }

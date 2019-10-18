@@ -49,5 +49,6 @@ public class ConstantUtils {
     public static final String ANSWERS_FIELD_ID = "id";
     public static final String ANSWERS_FIELD_QUESTIONANSWERS = "questionAnswers";
     public static final String ANSWERS_FIELD_DESCRIPTION = "description";
+    public static final String ANSWERS_FIELD_VISIBLE = "isVisible";
     public static final String ANSWERS_FIELD_CREATIONDATE = "creationDate";
 }

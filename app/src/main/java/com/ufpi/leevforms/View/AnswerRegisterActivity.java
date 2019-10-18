@@ -241,6 +241,8 @@ public class AnswerRegisterActivity extends AppCompatActivity {
 
         elementReference.child(ConstantUtils.ANSWERS_FIELD_CREATIONDATE).setValue(Calendar.getInstance().getTime().getTime());
         elementReference.child(ConstantUtils.ANSWERS_FIELD_DESCRIPTION).setValue(eDescription.getText().toString());
+        elementReference.child(ConstantUtils.ANSWERS_FIELD_VISIBLE).setValue(true);
+
         for(Question question : questions){
             elementReference
                     .child(ConstantUtils.ANSWERS_FIELD_QUESTIONANSWERS)

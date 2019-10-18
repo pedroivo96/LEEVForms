@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -22,7 +23,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.ufpi.leevforms.Adapter.QuestionStatisticsAdapter;
 import com.ufpi.leevforms.Model.Question;
+import com.ufpi.leevforms.Model.QuestionStatistic;
 import com.ufpi.leevforms.R;
 import com.ufpi.leevforms.Utils.ConstantUtils;
 import com.ufpi.leevforms.Utils.NavigationDrawerUtils;
@@ -43,6 +46,9 @@ public class FormStatisticsActivity extends AppCompatActivity {
     private ArrayList<Question> questions;
     private HashMap<String, ArrayList<String>> questionAnswers;
 
+    private ArrayList<QuestionStatistic> questionStatistics;
+    private ListView lQuestionStatistics;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +66,8 @@ public class FormStatisticsActivity extends AppCompatActivity {
 
         questions = new ArrayList<>();
         questionAnswers = new HashMap<>();
+
+        lQuestionStatistics = findViewById(R.id.lQuestionStatistics);
 
         mDatabaseForms
                 .child(prefs.getString(ConstantUtils.USER_FIELD_ID, ""))
@@ -88,6 +96,7 @@ public class FormStatisticsActivity extends AppCompatActivity {
                         }
 
                         questionAnswers.put(question.getId(), new ArrayList<String>());
+                        questions.add(question);
                     }
 
                     Log.i("TAG", String.valueOf(questionAnswers.keySet().size()));
@@ -140,6 +149,7 @@ public class FormStatisticsActivity extends AppCompatActivity {
                     }
 
                     printOnLogQuestionAnswers();
+                    configureQuestionStatisticsListView();
                 }
             }
 
@@ -148,6 +158,30 @@ public class FormStatisticsActivity extends AppCompatActivity {
 
             }
         };
+    }
+
+    private void configureQuestionStatisticsListView() {
+        questionStatistics = new ArrayList<>();
+
+        for(String questionId : questionAnswers.keySet()){
+
+            QuestionStatistic questionStatistic = new QuestionStatistic();
+
+            for(Question question : questions){
+
+                if(question.getId().equals(questionId)){
+                    questionStatistic.setQuestion(question);
+                }
+            }
+
+            questionStatistic.setQuestionAnswers(questionAnswers.get(questionId));
+            questionStatistics.add(questionStatistic);
+        }
+
+        QuestionStatisticsAdapter questionStatisticsAdapter = new QuestionStatisticsAdapter(questionStatistics, getContext());
+        lQuestionStatistics.setAdapter(questionStatisticsAdapter);
+        questionStatisticsAdapter.notifyDataSetChanged();
+
     }
 
     private void printOnLogQuestionAnswers() {
