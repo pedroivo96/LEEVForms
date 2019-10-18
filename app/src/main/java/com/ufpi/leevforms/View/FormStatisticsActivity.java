@@ -73,6 +73,9 @@ public class FormStatisticsActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
+
+                    Log.i("TAG", String.valueOf(dataSnapshot.getChildrenCount()));
+
                     for(DataSnapshot d : dataSnapshot.getChildren()){
 
                         Question question = new Question();
@@ -86,6 +89,8 @@ public class FormStatisticsActivity extends AppCompatActivity {
 
                         questionAnswers.put(question.getId(), new ArrayList<String>());
                     }
+
+                    Log.i("TAG", String.valueOf(questionAnswers.keySet().size()));
 
                     mDatabaseForms
                             .child(prefs.getString(ConstantUtils.USER_FIELD_ID, ""))
@@ -113,15 +118,24 @@ public class FormStatisticsActivity extends AppCompatActivity {
 
                         for(String questionId : questionAnswers.keySet()){
 
-                            ArrayList<String> answers = (ArrayList<String>) d
-                                    .child(ConstantUtils.ANSWERS_FIELD_QUESTIONANSWERS)
+                            if(d.child(ConstantUtils.ANSWERS_FIELD_QUESTIONANSWERS)
                                     .child(questionId)
                                     .child(ConstantUtils.ANSWERS_FIELD_DESCRIPTION)
-                                    .getValue();
+                                    .exists()){
 
-                            answers.addAll(questionAnswers.get(questionId));
+                                ArrayList<String> answers;
 
-                            questionAnswers.put(questionId, answers);
+                                answers = (ArrayList<String>) d
+                                        .child(ConstantUtils.ANSWERS_FIELD_QUESTIONANSWERS)
+                                        .child(questionId)
+                                        .child(ConstantUtils.ANSWERS_FIELD_DESCRIPTION)
+                                        .getValue();
+
+                                answers.addAll(questionAnswers.get(questionId));
+
+                                questionAnswers.put(questionId, answers);
+
+                            }
                         }
                     }
 
@@ -138,8 +152,10 @@ public class FormStatisticsActivity extends AppCompatActivity {
 
     private void printOnLogQuestionAnswers() {
 
+        Log.i("TAG", "Respostas das questões");
         for(String questionId : questionAnswers.keySet()){
-            Log.i("TAG", questionAnswers.get(questionId).toString());
+
+            Log.i("TAG", "Respostas da questão "+questionId+" : "+questionAnswers.get(questionId).toString());
         }
     }
 
