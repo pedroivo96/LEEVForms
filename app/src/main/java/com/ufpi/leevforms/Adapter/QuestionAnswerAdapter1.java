@@ -51,7 +51,7 @@ public class QuestionAnswerAdapter1 extends BaseAdapter {
         TextView tQuestionAnswerDescription = view1.findViewById(R.id.tQuestionAnswerDescription);
 
         tQuestionDescription.setText(questionAnswer.getQuestionDescription());
-        tQuestionAnswerDescription.setText(questionAnswer.getDescription().toString());
+        tQuestionAnswerDescription.setText(questionAnswer.getDescription().toString().substring(1, questionAnswer.getDescription().toString().length()-1));
 
         return view1;
     }

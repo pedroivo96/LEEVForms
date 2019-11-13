@@ -31,7 +31,9 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Descrição"/>
+                    android:text="Descrição"
+                    android:textSize="@dimen/subtitle1"
+                    android:textColor="@color/primaryTextColor"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -40,7 +42,10 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Criada em"/>
+                    android:text="Criada em"
+                    android:layout_marginTop="10dp"
+                    android:textSize="@dimen/subtitle1"
+                    android:textColor="@color/primaryTextColor"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -48,10 +53,24 @@
 
             </LinearLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@color/primaryTextColor"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Respostas"
+                android:textSize="@dimen/subtitle1"
+                android:textAlignment="center"/>
+
             <ListView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/lQuestionAnswers"/>
+                android:id="@+id/lQuestionAnswers"
+                android:layout_marginTop="10dp"/>
 
         </LinearLayout>
     </RelativeLayout>

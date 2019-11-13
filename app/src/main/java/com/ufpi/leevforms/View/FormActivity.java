@@ -43,6 +43,7 @@ public class FormActivity extends AppCompatActivity {
     private SharedPreferences prefs = null;
     private DatabaseReference mDatabaseForms;
     private String idForm;
+    private String studentId;
 
     private TextView tName;
     private TextView tDescription;
@@ -63,7 +64,8 @@ public class FormActivity extends AppCompatActivity {
         tCreationDate = findViewById(R.id.tCreationDate);
         lQuestions = findViewById(R.id.lQuestions);
 
-        idForm = getIntent().getStringExtra(ConstantUtils.FORMS_FIELD_ID);
+        idForm = getIntent().getStringExtra("formId");
+        studentId = getIntent().getStringExtra("studentId");
         Log.i("TAG", "Depois de selecionar o Form :"+idForm);
 
         mDatabaseForms = FirebaseDatabase.getInstance().getReference()
@@ -74,11 +76,20 @@ public class FormActivity extends AppCompatActivity {
 
         configureNavigationDrawer();
 
-        mDatabaseForms
-                .child(prefs.getString(ConstantUtils.USER_FIELD_ID,""))
-                .orderByKey()
-                .equalTo(idForm)
-                .addListenerForSingleValueEvent(getFormInformations());
+        if(studentId == null){
+            mDatabaseForms
+                    .child(prefs.getString(ConstantUtils.USER_FIELD_ID, ""))
+                    .orderByKey()
+                    .equalTo(idForm)
+                    .addListenerForSingleValueEvent(getFormInformations());
+        }
+        else{
+            mDatabaseForms
+                    .child(studentId)
+                    .orderByKey()
+                    .equalTo(idForm)
+                    .addListenerForSingleValueEvent(getFormInformations());
+        }
     }
 
     private ValueEventListener getFormInformations() {

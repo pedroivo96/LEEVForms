@@ -17,8 +17,10 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -50,12 +52,21 @@ public class MyFormsActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
 
+    private LinearLayout linearLayoutMyForms;
+    private LinearLayout linearLayoutNoForms;
+
+    private boolean isMyForms = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_forms);
 
         lForms = findViewById(R.id.lForms);
+
+        linearLayoutMyForms = findViewById(R.id.linearLayoutMyForms);
+        linearLayoutNoForms = findViewById(R.id.linearLayoutNoForms);
+
         forms = new ArrayList<>();
 
         prefs = getSharedPreferences(ConstantUtils.APPLICATION_ID, MODE_PRIVATE);
@@ -69,7 +80,7 @@ public class MyFormsActivity extends AppCompatActivity {
                 Log.i("TAG", "ID do Form selecionado :"+forms.get(position).getId());
 
                 Intent intent = new Intent(getContext(), FormActivity.class);
-                intent.putExtra(ConstantUtils.FORMS_FIELD_ID, forms.get(position).getId());
+                intent.putExtra("formId", forms.get(position).getId());
                 startActivity(intent);
 
             }
@@ -105,6 +116,9 @@ public class MyFormsActivity extends AppCompatActivity {
 
                 if(dataSnapshot.exists()){
 
+                    showMyFormsLayout();
+                    notShowNoFormsLayout();
+
                     Log.i("TAG", "Número de resultados :"+dataSnapshot.getChildrenCount());
 
                     forms = new ArrayList<>();
@@ -125,6 +139,10 @@ public class MyFormsActivity extends AppCompatActivity {
 
                     formsAdapter = new FormsAdapter(forms, getContext());
                     lForms.setAdapter(formsAdapter);
+                }
+                else{
+                    showNoFormsLayout();
+                    notShowMyFormsLayout();
                 }
             }
 
@@ -255,5 +273,25 @@ public class MyFormsActivity extends AppCompatActivity {
         alerta = builder.create();
         //Exibe
         alerta.show();
+    }
+
+    private void showMyFormsLayout(){
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 10.0f);
+        linearLayoutMyForms.setLayoutParams(params);
+    }
+
+    private void notShowMyFormsLayout(){
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 0.0f);
+        linearLayoutMyForms.setLayoutParams(params);
+    }
+
+    private void showNoFormsLayout(){
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 10.0f);
+        linearLayoutNoForms.setLayoutParams(params);
+    }
+
+    private void notShowNoFormsLayout(){
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 0.0f);
+        linearLayoutNoForms.setLayoutParams(params);
     }
 }

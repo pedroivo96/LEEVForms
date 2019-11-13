@@ -95,7 +95,15 @@ public class AnswerActivity extends AppCompatActivity {
                 if(dataSnapshot.exists()){
                     for(DataSnapshot d : dataSnapshot.getChildren()){
 
-                        tAnswerDescription.setText(d.child(ConstantUtils.ANSWERS_FIELD_DESCRIPTION).getValue(String.class));
+                        String answerDescription = d.child(ConstantUtils.ANSWERS_FIELD_DESCRIPTION).getValue(String.class);
+
+                        if(answerDescription.isEmpty() || answerDescription.equals(null)){
+                            tAnswerDescription.setText("Descrição não informada");
+                        }
+                        else{
+                            tAnswerDescription.setText(answerDescription);
+                        }
+
                         tAnswerCreationDate.setText(DateTimeUtils.getDateTimeFromTimeStamp(d.child(ConstantUtils.ANSWERS_FIELD_CREATIONDATE).getValue(Long.class), DateTimeUtils.DATE_FORMAT_4));
 
                     }

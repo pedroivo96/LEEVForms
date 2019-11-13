@@ -3,19 +3,24 @@
     <group>
         <item
             android:id="@+id/nav_my_profile"
-            android:title="Meu perfil"/>
+            android:title="Meu perfil"
+            android:icon="@mipmap/ic_home_black"/>
         <item
             android:id="@+id/nav_form_register"
-            android:title="Novo formulário"/>
+            android:title="Novo formulário"
+            android:icon="@mipmap/ic_add_black"/>
         <item
             android:id="@+id/nav_my_forms"
-            android:title="Meus formulários"/>
+            android:title="Meus formulários"
+            android:icon="@mipmap/ic_list_black"/>
         <item
             android:id="@+id/nav_my_students"
-            android:title="Meus alunos"/>
+            android:title="Meus alunos"
+            android:icon="@mipmap/ic_person_outlined_black"/>
         <item
             android:id="@+id/nav_logout"
-            android:title="Sair"/>
+            android:title="Sair"
+            android:icon="@mipmap/ic_logout_black"/>
     </group>
 </menu>
 

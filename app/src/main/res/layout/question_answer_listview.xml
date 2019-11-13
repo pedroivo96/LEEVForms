@@ -3,15 +3,20 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="@dimen/activity_padding">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/tQuestionDescription"/>
+        android:id="@+id/tQuestionDescription"
+        android:textSize="@dimen/subtitle1"
+        android:textColor="@color/primaryTextColor"
+        android:layout_marginBottom="5dp"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textAlignment="center"
         android:id="@+id/tQuestionAnswerDescription"/>
 
 </LinearLayout>

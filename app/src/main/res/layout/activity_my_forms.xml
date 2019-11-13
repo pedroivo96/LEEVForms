@@ -19,14 +19,41 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/toolbar">
+            android:layout_below="@id/toolbar"
+            android:orientation="vertical"
+            android:weightSum="10">
 
-            <ListView
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/lForms"/>
+                android:layout_height="0dp"
+                android:layout_weight="10"
+                android:orientation="vertical"
+                android:id="@+id/linearLayoutMyForms">
+                <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/lForms"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:id="@+id/linearLayoutNoForms">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:text="Não existem formulários cadastrados"/>
+                </LinearLayout>
+            </LinearLayout>
 
         </LinearLayout>
+
     </RelativeLayout>
 
     <android.support.design.widget.NavigationView

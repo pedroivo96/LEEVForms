@@ -9,11 +9,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <activity
+            android:name=".View.StudentFormsActivity"
+            android:theme="@style/AppThemeNoActionBar"
+            android:label="Formulários de estudante"/>
+        <activity
+            android:name=".View.MyStudentsActivity"
+            android:theme="@style/AppThemeNoActionBar"
+            android:label="Meus alunos"/>
         <activity
             android:name=".View.FormStatisticsActivity"
             android:label="Estatísticas"
-            android:theme="@style/AppThemeNoActionBar"/>
+            android:theme="@style/AppThemeNoActionBar" />
         <activity
             android:name=".View.AnswerActivity"
             android:label="Dados de resposta"

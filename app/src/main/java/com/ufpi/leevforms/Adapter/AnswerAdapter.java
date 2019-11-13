@@ -50,7 +50,13 @@ public class AnswerAdapter extends BaseAdapter {
         TextView tAnswerDescription = view1.findViewById(R.id.tAnswerDescription);
         TextView tAnswerCreationDate = view1.findViewById(R.id.tAnswerCreationDate);
 
-        tAnswerDescription.setText(answer.getDescription());
+        if(answer.getDescription().equals(null) || answer.getDescription().isEmpty()){
+            tAnswerDescription.setText("Descrição não informada");
+        }
+        else{
+            tAnswerDescription.setText(answer.getDescription());
+        }
+
         tAnswerCreationDate.setText(DateTimeUtils.getDateTimeFromTimeStamp(answer.getCreationDate(), DateTimeUtils.DATE_FORMAT_4));
 
         return view1;

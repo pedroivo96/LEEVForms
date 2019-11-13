@@ -52,7 +52,20 @@ public class QuestionStatisticsAdapter extends BaseAdapter {
             //Caso a questão seja subjetiva
             view1 = inflater.inflate(R.layout.statistics_subjetive_item_listview, parent, false);
 
-            LinearLayout layoutSubjetiveQuestions = view1.findViewById(R.id.layoutSubjetiveQuestions);
+            final LinearLayout layoutSubjetiveQuestions = view1.findViewById(R.id.layoutSubjetiveQuestions);
+
+            view1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(layoutSubjetiveQuestions.getVisibility() == View.VISIBLE){
+                        layoutSubjetiveQuestions.setVisibility(View.GONE);
+                    }
+                    else{
+                        layoutSubjetiveQuestions.setVisibility(View.VISIBLE);
+                    }
+                }
+            });
+
             TextView tQuestionDescription = view1.findViewById(R.id.tQuestionDescription);
             tQuestionDescription.setText(questionStatistic.getQuestion().getDescription());
 

@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ufpi.leevforms.Model.Question;
@@ -48,18 +49,37 @@ public class QuestionsAdapter extends BaseAdapter {
 
         TextView tQuestionDescription = view1.findViewById(R.id.tQuestionDescription);
         TextView tQuestionType = view1.findViewById(R.id.tQuestionType);
-        TextView tQuestiosAnswersOptions = view1.findViewById(R.id.tQuestiosAnswersOptions);
+        TextView tQuestionsAnswersOptions = view1.findViewById(R.id.tQuestionsAnswersOptions);
+        LinearLayout linearLayoutQuestionOptions = view1.findViewById(R.id.linearLayoutQuestionOptions);
 
         tQuestionDescription.setText(question.getDescription());
 
         if(question.getType() == ConstantUtils.QUESTION_TYPE_SUBJETIVE) tQuestionType.setText("Subjetiva");
         if(question.getType() == ConstantUtils.QUESTION_TYPE_OBJETIVE_SINGLE_ANSWER) {
             tQuestionType.setText("Objetiva com resposta única");
-            tQuestiosAnswersOptions.setText(question.getOptions().toString());
+            //tQuestionsAnswersOptions.setText(question.getOptions().toString());
+
+            for(String questionOption : question.getOptions()){
+                View questionAnswerView = inflater.inflate(R.layout.textview_question_option, linearLayoutQuestionOptions, false);
+                TextView tQuestionOption = questionAnswerView.findViewById(R.id.tQuestionOption);
+
+                tQuestionOption.setText(questionOption);
+
+                linearLayoutQuestionOptions.addView(questionAnswerView);
+            }
         }
         if(question.getType() == ConstantUtils.QUESTION_TYPE_OBJETIVE_MULTIPLE_ANSWER) {
             tQuestionType.setText("Objetiva com múltiplas respostas");
-            tQuestiosAnswersOptions.setText(question.getOptions().toString());
+            //tQuestionsAnswersOptions.setText(question.getOptions().toString());
+
+            for(String questionOption : question.getOptions()){
+                View questionAnswerView = inflater.inflate(R.layout.textview_question_option, linearLayoutQuestionOptions, false);
+                TextView tQuestionOption = questionAnswerView.findViewById(R.id.tQuestionOption);
+
+                tQuestionOption.setText(questionOption);
+
+                linearLayoutQuestionOptions.addView(questionAnswerView);
+            }
         }
 
         return view1;
