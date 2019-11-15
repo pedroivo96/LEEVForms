@@ -221,11 +221,11 @@ public class FormListAnswersActivity extends AppCompatActivity {
         AlertDialog alerta;
 
         //Cria o gerador do AlertDialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.MyDialogTheme);
         //define o titulo
         builder.setTitle("Remoção");
         //define a mensagem
-        builder.setMessage("Você realmente deseja remover esse aluno ?");
+        builder.setMessage("Você realmente deseja remover essa resposta ?");
         //define um botão como positivo
         builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface arg0, int arg1) {

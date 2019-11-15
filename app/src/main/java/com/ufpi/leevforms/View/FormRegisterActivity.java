@@ -1,8 +1,10 @@
 package com.ufpi.leevforms.View;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.support.design.widget.CoordinatorLayout;
@@ -300,6 +302,10 @@ public class FormRegisterActivity extends AppCompatActivity {
         }
 
         simplySnackbar("Formulário cadastrado com sucesso");
+
+        Intent intent = new Intent(getContext(), MyFormsActivity.class);
+        startActivity(intent);
+        ((Activity) getContext()).finish();
     }
 
     private void checkEmptyFields(){

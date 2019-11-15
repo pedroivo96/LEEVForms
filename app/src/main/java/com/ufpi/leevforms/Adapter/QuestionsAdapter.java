@@ -54,9 +54,9 @@ public class QuestionsAdapter extends BaseAdapter {
 
         tQuestionDescription.setText(question.getDescription());
 
-        if(question.getType() == ConstantUtils.QUESTION_TYPE_SUBJETIVE) tQuestionType.setText("Subjetiva");
+        if(question.getType() == ConstantUtils.QUESTION_TYPE_SUBJETIVE) tQuestionType.setText("(Subjetiva)");
         if(question.getType() == ConstantUtils.QUESTION_TYPE_OBJETIVE_SINGLE_ANSWER) {
-            tQuestionType.setText("Objetiva com resposta única");
+            tQuestionType.setText("(Objetiva com resposta única)");
             //tQuestionsAnswersOptions.setText(question.getOptions().toString());
 
             for(String questionOption : question.getOptions()){
@@ -69,7 +69,7 @@ public class QuestionsAdapter extends BaseAdapter {
             }
         }
         if(question.getType() == ConstantUtils.QUESTION_TYPE_OBJETIVE_MULTIPLE_ANSWER) {
-            tQuestionType.setText("Objetiva com múltiplas respostas");
+            tQuestionType.setText("(Objetiva com múltiplas respostas)");
             //tQuestionsAnswersOptions.setText(question.getOptions().toString());
 
             for(String questionOption : question.getOptions()){

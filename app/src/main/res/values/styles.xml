@@ -7,6 +7,7 @@
         <item name="colorPrimaryDark">@color/secondaryDarkColor</item>
         <item name="colorAccent">@color/primaryColor</item>
         <item name="android:actionOverflowButtonStyle">@style/AppTheme.OverFlow</item>
+        <item name="alertDialogTheme">@style/MyDialogTheme</item>
     </style>
 
     <style name="AppThemeNoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
@@ -15,6 +16,7 @@
         <item name="colorPrimaryDark">@color/secondaryDarkColor</item>
         <item name="colorAccent">@color/primaryColor</item>
         <item name="android:actionOverflowButtonStyle">@style/AppTheme.OverFlow</item>
+        <item name="alertDialogTheme">@style/MyDialogTheme</item>
     </style>
 
     <style name="AppTheme.OverFlow">
@@ -32,7 +34,7 @@
         <item name="colorControlHighlight">@color/primaryTextColor</item>
     </style>
 
-    <style name="MyDialogTheme" parent="ThemeOverlay.AppCompat.Dialog.Alert">
+    <style name="MyDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:textColor">@color/primaryTextColor</item>
         <item name="android:buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
         <item name="android:buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>

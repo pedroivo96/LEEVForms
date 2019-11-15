@@ -231,7 +231,7 @@ public class MyStudentsActivity extends AppCompatActivity {
         AlertDialog alerta;
 
         //Cria o gerador do AlertDialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.MyDialogTheme);
         //define o titulo
         builder.setTitle("Remoção");
         //define a mensagem

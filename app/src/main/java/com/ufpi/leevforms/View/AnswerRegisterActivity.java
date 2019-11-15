@@ -1,11 +1,14 @@
 package com.ufpi.leevforms.View;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.GravityCompat;
@@ -57,6 +60,8 @@ public class AnswerRegisterActivity extends AppCompatActivity {
     private TextInputLayout textInputLayoutDescription;
     private EditText eDescription;
 
+    private CoordinatorLayout myCoordinatorLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +70,7 @@ public class AnswerRegisterActivity extends AppCompatActivity {
         lQuestions = findViewById(R.id.lQuestions);
         textInputLayoutDescription = findViewById(R.id.textInputLayoutDescription);
         eDescription = findViewById(R.id.eDescription);
+        myCoordinatorLayout = findViewById(R.id.myCoordinatorLayout);
 
         lQuestions.setItemsCanFocus(true);
 
@@ -250,6 +256,17 @@ public class AnswerRegisterActivity extends AppCompatActivity {
                     .child(ConstantUtils.ANSWERS_FIELD_DESCRIPTION)
                     .setValue(question.getAnswers());
         }
+
+        simplySnackbar("Formulário cadastrado com sucesso");
+
+        ((Activity) getContext()).finish();
+
+    }
+
+    public void simplySnackbar(String message){
+
+        Snackbar snackbar = Snackbar.make(myCoordinatorLayout,message, Snackbar.LENGTH_LONG);
+        snackbar.show();
 
     }
 }

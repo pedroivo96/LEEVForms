@@ -48,8 +48,7 @@
             android:theme="@style/AppThemeNoActionBar" />
         <activity
             android:name=".View.ForgetPasswordActivity"
-            android:label="Esqueci minhas senha"
-            android:theme="@style/AppThemeNoActionBar" />
+            android:label="Esqueci minha senha" />
         <activity
             android:name=".View.UserActivity"
             android:label="Meu perfil"

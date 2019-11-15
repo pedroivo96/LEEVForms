@@ -125,25 +125,28 @@ public class FormStatisticsActivity extends AppCompatActivity {
 
                     for(DataSnapshot d : dataSnapshot.getChildren()){
 
-                        for(String questionId : questionAnswers.keySet()){
+                        if(d.child(ConstantUtils.ANSWERS_FIELD_VISIBLE).getValue(Boolean.class)){
 
-                            if(d.child(ConstantUtils.ANSWERS_FIELD_QUESTIONANSWERS)
-                                    .child(questionId)
-                                    .child(ConstantUtils.ANSWERS_FIELD_DESCRIPTION)
-                                    .exists()){
+                            for(String questionId : questionAnswers.keySet()){
 
-                                ArrayList<String> answers;
-
-                                answers = (ArrayList<String>) d
-                                        .child(ConstantUtils.ANSWERS_FIELD_QUESTIONANSWERS)
+                                if(d.child(ConstantUtils.ANSWERS_FIELD_QUESTIONANSWERS)
                                         .child(questionId)
                                         .child(ConstantUtils.ANSWERS_FIELD_DESCRIPTION)
-                                        .getValue();
+                                        .exists()){
 
-                                answers.addAll(questionAnswers.get(questionId));
+                                    ArrayList<String> answers;
 
-                                questionAnswers.put(questionId, answers);
+                                    answers = (ArrayList<String>) d
+                                            .child(ConstantUtils.ANSWERS_FIELD_QUESTIONANSWERS)
+                                            .child(questionId)
+                                            .child(ConstantUtils.ANSWERS_FIELD_DESCRIPTION)
+                                            .getValue();
 
+                                    answers.addAll(questionAnswers.get(questionId));
+
+                                    questionAnswers.put(questionId, answers);
+
+                                }
                             }
                         }
                     }
