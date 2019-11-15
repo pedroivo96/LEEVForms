@@ -39,6 +39,7 @@ public class ConstantUtils {
     public static final String QUESTIONS_FIELD_ID = "id";
     public static final String QUESTIONS_FIELD_DESCRIPTION = "description";
     public static final String QUESTIONS_FIELD_TYPE = "type";
+    public static final String QUESTIONS_FIELD_ORDER = "order";
     public static final String QUESTIONS_FIELD_ANSWEROPTIONS = "answerOptions";
 
     public static final int QUESTION_TYPE_SUBJETIVE = 1;

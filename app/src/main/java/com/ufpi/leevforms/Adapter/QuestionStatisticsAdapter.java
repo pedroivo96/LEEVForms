@@ -8,11 +8,14 @@ import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.ufpi.leevforms.Model.Question;
 import com.ufpi.leevforms.Model.QuestionStatistic;
 import com.ufpi.leevforms.R;
 import com.ufpi.leevforms.Utils.ConstantUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class QuestionStatisticsAdapter extends BaseAdapter {
 
@@ -22,6 +25,21 @@ public class QuestionStatisticsAdapter extends BaseAdapter {
     public QuestionStatisticsAdapter(ArrayList<QuestionStatistic> questionStatistics, Context context){
         this.questionStatistics = questionStatistics;
         this.context = context;
+
+        Collections.sort(this.questionStatistics, new Comparator<QuestionStatistic>() {
+            @Override
+            public int compare(QuestionStatistic q1, QuestionStatistic q2) {
+                if (q1.getQuestion().getOrder() > q2.getQuestion().getOrder())
+                {
+                    return 1;
+                }
+                else if (q1.getQuestion().getOrder() < q2.getQuestion().getOrder())
+                {
+                    return -1;
+                }
+                return 0;
+            }
+        });
     }
 
     @Override

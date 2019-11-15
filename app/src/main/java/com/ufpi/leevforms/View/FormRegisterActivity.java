@@ -207,6 +207,8 @@ public class FormRegisterActivity extends AppCompatActivity {
                                 question.setDescription(eQuestionDescription.getText().toString());
                                 question.setType(spQuestionType.getSelectedItemPosition()+1);
 
+                                question.setOrder(questions.size()+1);
+
                                 questions.add(question);
 
                                 questionsAdapter.notifyDataSetChanged();
@@ -295,6 +297,7 @@ public class FormRegisterActivity extends AppCompatActivity {
 
             elementReference1.child(ConstantUtils.QUESTIONS_FIELD_DESCRIPTION).setValue(question.getDescription());
             elementReference1.child(ConstantUtils.QUESTIONS_FIELD_TYPE).setValue(question.getType());
+            elementReference1.child(ConstantUtils.QUESTIONS_FIELD_ORDER).setValue(question.getOrder());
 
             if(question.getOptions().size() > 0){
                 elementReference1.child(ConstantUtils.QUESTIONS_FIELD_ANSWEROPTIONS).setValue(question.getOptions());

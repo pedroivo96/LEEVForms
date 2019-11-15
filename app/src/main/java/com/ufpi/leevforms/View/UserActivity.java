@@ -2,9 +2,11 @@ package com.ufpi.leevforms.View;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -19,6 +21,7 @@ import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -58,6 +61,8 @@ public class UserActivity extends AppCompatActivity {
     private DatabaseReference mDatabaseUsers;
     private DatabaseReference mDatabaseFrequencies;
 
+    private Dialog mDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,6 +89,9 @@ public class UserActivity extends AppCompatActivity {
         configureNavigationDrawer();
 
         //Busca as informação do usuário logado para exibí-las nessa tela
+
+        openDialog();
+
         mDatabaseUsers
                 .orderByChild(ConstantUtils.USER_FIELD_EMAIL)
                 .equalTo(prefs.getString(ConstantUtils.USER_FIELD_EMAIL,""))
@@ -156,6 +164,8 @@ public class UserActivity extends AppCompatActivity {
                         tUserName.setText((String) d.child(ConstantUtils.USER_FIELD_NAME).getValue());
                         tUserEmail.setText((String) d.child(ConstantUtils.USER_FIELD_EMAIL).getValue());
                         tUserProjects.setText((String) d.child(ConstantUtils.USER_FIELD_PROJECTS).getValue());
+
+                        closeDialog();
                     }
                 }
             }
@@ -243,4 +253,25 @@ public class UserActivity extends AppCompatActivity {
                 .child(prefs.getString(ConstantUtils.USER_FIELD_ID,""))
                 .updateChildren(result);
     }
+
+    public void openDialog(){
+        mDialog = new Dialog(this);
+        //vamos remover o titulo da Dialog
+        mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //vamos carregar o xml personalizado
+        mDialog.setContentView(R.layout.progressbar_dialog);
+        //DEixamos transparente
+        mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        // não permitimos fechar esta dialog
+        mDialog.setCancelable(false);
+        //temos a instancia do ProgressBar!
+        //final ProgressBar progressBar = ProgressBar.class.cast(mDialog.findViewById(R.id.progressBar));
+
+        mDialog.show();
+    }
+
+    private void closeDialog(){
+        mDialog.dismiss();
+    }
+
 }

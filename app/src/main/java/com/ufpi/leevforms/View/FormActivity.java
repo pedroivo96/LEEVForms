@@ -1,6 +1,8 @@
 package com.ufpi.leevforms.View;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
@@ -17,6 +19,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -34,6 +38,7 @@ import com.ufpi.leevforms.Utils.DateTimeUtils;
 import com.ufpi.leevforms.Utils.NavigationDrawerUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class FormActivity extends AppCompatActivity {
 
@@ -54,6 +59,8 @@ public class FormActivity extends AppCompatActivity {
 
     private ArrayList<Question> questions;
 
+    private QuestionsAdapter questionsAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +70,15 @@ public class FormActivity extends AppCompatActivity {
         tDescription = findViewById(R.id.tDescription);
         tCreationDate = findViewById(R.id.tCreationDate);
         lQuestions = findViewById(R.id.lQuestions);
+
+        lQuestions.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                createAndShowFormsOptionsMenu(questions.get(position).getId(), position);
+
+                return true;
+            }
+        });
 
         idForm = getIntent().getStringExtra("formId");
         studentId = getIntent().getStringExtra("studentId");
@@ -134,7 +150,6 @@ public class FormActivity extends AppCompatActivity {
                 if(dataSnapshot.exists()){
 
                     questions = new ArrayList<>();
-                    QuestionsAdapter questionsAdapter;
 
                     for(DataSnapshot d : dataSnapshot.getChildren()){
 
@@ -143,6 +158,7 @@ public class FormActivity extends AppCompatActivity {
                         question.setDescription((String) d.child(ConstantUtils.QUESTIONS_FIELD_DESCRIPTION).getValue());
                         question.setType(d.child(ConstantUtils.QUESTIONS_FIELD_TYPE).getValue(Integer.class));
                         question.setOptions((ArrayList<String>) d.child(ConstantUtils.QUESTIONS_FIELD_ANSWEROPTIONS).getValue());
+                        question.setOrder(d.child(ConstantUtils.QUESTIONS_FIELD_ORDER).getValue(Integer.class));
 
                         questions.add(question);
                     }
@@ -245,6 +261,79 @@ public class FormActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void createAndShowFormsOptionsMenu(final String idQuestion, final int position){
+
+        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), R.layout.dialog_list_textview, R.id.textView1);
+        arrayAdapter.add("Remover");
+
+        AlertDialog.Builder builderSingle = new AlertDialog.Builder(getContext());
+        builderSingle.setIcon(null);
+        builderSingle.setTitle("Menu");
+
+        builderSingle.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                String strName = arrayAdapter.getItem(which);
+
+                switch (which){
+                    case 0:
+                        //Remover
+                        createAndShowRemoveFormDialog(idQuestion, position);
+                        break;
+                }
+            }
+        });
+        builderSingle.show();
+    }
+
+    private void createAndShowRemoveFormDialog(final String idQuestion, final int position){
+
+        AlertDialog alerta;
+
+        //Cria o gerador do AlertDialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.MyDialogTheme);
+        //define o titulo
+        builder.setTitle("Remoção");
+        //define a mensagem
+        builder.setMessage("Você realmente deseja remover esse questão ?");
+        //define um botão como positivo
+        builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface arg0, int arg1) {
+                //Toast.makeText(getContext(), "positivo=" + arg1, Toast.LENGTH_SHORT).show();
+
+                mDatabaseForms
+                        .child(prefs.getString(ConstantUtils.USER_FIELD_ID, ""))
+                        .child(idForm)
+                        .child(ConstantUtils.QUESTIONS_BRANCH)
+                        .child(idQuestion)
+                        .setValue(null);
+
+                questions.remove(position);
+                questionsAdapter.notifyDataSetChanged();
+                //myStudents.remove(position);
+
+            }
+        });
+        //define um botão como negativo.
+        builder.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface arg0, int arg1) {
+                //Toast.makeText(getContext(), "negativo=" + arg1, Toast.LENGTH_SHORT).show();
+            }
+        });
+        //cria o AlertDialog
+        alerta = builder.create();
+        //Exibe
+        alerta.show();
     }
 
 }

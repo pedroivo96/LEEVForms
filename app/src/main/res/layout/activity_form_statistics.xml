@@ -23,10 +23,34 @@
             android:orientation="vertical"
             android:padding="@dimen/activity_padding">
 
-            <ListView
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/lQuestionStatistics"/>
+                android:layout_height="0dp"
+                android:layout_weight="10"
+                android:orientation="vertical"
+                android:id="@+id/linearLayoutFormStatistics">
+                <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/lQuestionStatistics"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:id="@+id/linearLayoutNoFormStatistics">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:text="Não existem estatísticas disponíveis"/>
+                </LinearLayout>
+            </LinearLayout>
 
         </LinearLayout>
     </RelativeLayout>

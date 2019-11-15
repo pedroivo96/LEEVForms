@@ -1,5 +1,6 @@
 package com.ufpi.leevforms.View;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
@@ -14,7 +15,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -49,12 +53,19 @@ public class FormStatisticsActivity extends AppCompatActivity {
     private ArrayList<QuestionStatistic> questionStatistics;
     private ListView lQuestionStatistics;
 
+    private LinearLayout linearLayoutFormStatistics;
+    private LinearLayout linearLayoutNoFormStatistics;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form_statistics);
 
         idForm = getIntent().getStringExtra(ConstantUtils.FORMS_FIELD_ID);
+
+        linearLayoutFormStatistics = findViewById(R.id.linearLayoutFormStatistics);
+        linearLayoutNoFormStatistics = findViewById(R.id.linearLayoutNoFormStatistics);
 
         mDatabaseForms = FirebaseDatabase.getInstance().getReference()
                 .child(ConstantUtils.DATABASE_ACTUAL_BRANCH)
@@ -90,6 +101,7 @@ public class FormStatisticsActivity extends AppCompatActivity {
                         question.setId(d.getKey());
                         question.setDescription(d.child(ConstantUtils.QUESTIONS_FIELD_DESCRIPTION).getValue(String.class));
                         question.setType(d.child(ConstantUtils.QUESTIONS_FIELD_TYPE).getValue(Integer.class));
+                        question.setOrder(d.child(ConstantUtils.QUESTIONS_FIELD_ORDER).getValue(Integer.class));
 
                         if(question.getType() != ConstantUtils.QUESTION_TYPE_SUBJETIVE){
                             question.setOptions((ArrayList<String>) d.child(ConstantUtils.QUESTIONS_FIELD_ANSWEROPTIONS).getValue());
@@ -105,7 +117,7 @@ public class FormStatisticsActivity extends AppCompatActivity {
                             .child(prefs.getString(ConstantUtils.USER_FIELD_ID, ""))
                             .child(idForm)
                             .child(ConstantUtils.ANSWERS_BRANCH)
-                            .addValueEventListener(getFormAnswers());
+                            .addListenerForSingleValueEvent(getFormAnswers());
                 }
             }
 
@@ -123,7 +135,12 @@ public class FormStatisticsActivity extends AppCompatActivity {
 
                 if(dataSnapshot.exists()){
 
+                    showMyFormStatisticsLayout();
+                    notShowNoFormStatisticsLayout();
+
                     for(DataSnapshot d : dataSnapshot.getChildren()){
+
+                        Log.i("TAG", d.getKey());
 
                         if(d.child(ConstantUtils.ANSWERS_FIELD_VISIBLE).getValue(Boolean.class)){
 
@@ -153,6 +170,10 @@ public class FormStatisticsActivity extends AppCompatActivity {
 
                     printOnLogQuestionAnswers();
                     configureQuestionStatisticsListView();
+                }
+                else{
+                    showNoFormStatisticsLayout();
+                    notShowMyFormStatisticsLayout();
                 }
             }
 
@@ -250,4 +271,25 @@ public class FormStatisticsActivity extends AppCompatActivity {
                         prefs.getInt(ConstantUtils.USER_FIELD_USERTYPE,-1), drawerLayout));
 
     }
+
+    private void showMyFormStatisticsLayout(){
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 10.0f);
+        linearLayoutFormStatistics.setLayoutParams(params);
+    }
+
+    private void notShowMyFormStatisticsLayout(){
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 0.0f);
+        linearLayoutFormStatistics.setLayoutParams(params);
+    }
+
+    private void showNoFormStatisticsLayout(){
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 10.0f);
+        linearLayoutNoFormStatistics.setLayoutParams(params);
+    }
+
+    private void notShowNoFormStatisticsLayout(){
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 0.0f);
+        linearLayoutNoFormStatistics.setLayoutParams(params);
+    }
+
 }

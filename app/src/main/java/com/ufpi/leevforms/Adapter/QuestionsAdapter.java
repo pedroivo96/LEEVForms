@@ -13,6 +13,8 @@ import com.ufpi.leevforms.R;
 import com.ufpi.leevforms.Utils.ConstantUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class QuestionsAdapter extends BaseAdapter {
 
@@ -22,6 +24,21 @@ public class QuestionsAdapter extends BaseAdapter {
     public QuestionsAdapter(ArrayList<Question> questions, Context context){
         this.questions = questions;
         this.context = context;
+
+        Collections.sort(this.questions, new Comparator<Question>() {
+            @Override
+            public int compare(Question q1, Question q2) {
+                if (q1.getOrder() > q2.getOrder())
+                {
+                    return 1;
+                }
+                else if (q1.getOrder() < q2.getOrder())
+                {
+                    return -1;
+                }
+                return 0;
+            }
+        });
     }
 
     @Override

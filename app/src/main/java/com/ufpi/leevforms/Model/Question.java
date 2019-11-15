@@ -1,14 +1,17 @@
 package com.ufpi.leevforms.Model;
 
+import android.support.annotation.NonNull;
+
 import java.util.ArrayList;
 
-public class Question {
+public class Question{
 
     private String id;
     private String description;
     private int type;
     private ArrayList<String> options;
     private ArrayList<String> answers;
+    private int order;
 
     public Question(){
         options = new ArrayList<>();
@@ -53,5 +56,13 @@ public class Question {
 
     public void setAnswers(ArrayList<String> answers) {
         this.answers = answers;
+    }
+
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
     }
 }
