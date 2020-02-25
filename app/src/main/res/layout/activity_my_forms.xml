@@ -21,35 +21,50 @@
             android:layout_height="match_parent"
             android:layout_below="@id/toolbar"
             android:orientation="vertical"
-            android:weightSum="10">
+            android:background="@color/backgroundColor"
+            android:padding="10dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="10"
+                android:layout_height="match_parent"
+                android:background="@color/backgroundColor"
                 android:orientation="vertical"
-                android:id="@+id/linearLayoutMyForms">
-                <ListView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/lForms"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:id="@+id/linearLayoutNoForms">
+                android:weightSum="10">
+
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <TextView
+                    android:layout_height="0dp"
+                    android:layout_weight="0"
+                    android:orientation="vertical"
+                    android:id="@+id/linearLayoutMyForms">
+                    <ListView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:divider="@null"
+                        android:id="@+id/lForms"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="10"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:id="@+id/linearLayoutNoForms">
+
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textAlignment="center"
-                        android:text="Não existem formulários cadastrados"/>
+                        android:background="@color/surfaceColor"
+                        android:padding="10dp">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textAlignment="center"
+                            android:text="NÃO EXISTEM FORMULÁRIOS CADASTRADOS"/>
+                    </LinearLayout>
+
                 </LinearLayout>
+
             </LinearLayout>
 
         </LinearLayout>

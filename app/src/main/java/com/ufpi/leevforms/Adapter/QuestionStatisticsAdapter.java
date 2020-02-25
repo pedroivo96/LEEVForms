@@ -105,6 +105,9 @@ public class QuestionStatisticsAdapter extends BaseAdapter {
             }
         }
         else{
+
+            float totalAnswers = questionStatistic.getQuestionAnswers().size();
+
             //Caso a questão seja objetiva
             view1 = inflater.inflate(R.layout.statistics_objetive_item_listview, parent, false);
 
@@ -128,7 +131,8 @@ public class QuestionStatisticsAdapter extends BaseAdapter {
                     }
                 }
 
-                tAnswerOptionCount.setText(String.valueOf(answerOptionCount));
+                String f = String.format("%s (%.2f %s)", String.valueOf(answerOptionCount), (answerOptionCount/totalAnswers)*100.0, "%");
+                tAnswerOptionCount.setText(f);
                 layoutObjetiveQuestions.addView(answerLayout);
             }
 

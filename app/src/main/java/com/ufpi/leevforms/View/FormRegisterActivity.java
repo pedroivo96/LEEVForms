@@ -23,9 +23,11 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
@@ -71,6 +73,9 @@ public class FormRegisterActivity extends AppCompatActivity {
 
     private CoordinatorLayout myCoordinatorLayout;
 
+    private LinearLayout lEmptyQuestionList;
+    private LinearLayout lQuestionList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +86,9 @@ public class FormRegisterActivity extends AppCompatActivity {
         textInputLayoutName = findViewById(R.id.textInputLayoutName);
         textInputLayoutDescription = findViewById(R.id.textInputLayoutDescription);
         myCoordinatorLayout = findViewById(R.id.myCoordinatorLayout);
+
+        lEmptyQuestionList = findViewById(R.id.lEmptyQuestionList);
+        lQuestionList = findViewById(R.id.lQuestionList);
 
         questions = new ArrayList<>();
 
@@ -212,6 +220,11 @@ public class FormRegisterActivity extends AppCompatActivity {
                                 questions.add(question);
 
                                 questionsAdapter.notifyDataSetChanged();
+
+                                if(questions.size() > 0){
+                                    showQuestionListLayout();
+                                    hideEmptyQuestionListLayout();
+                                }
 
                                 Log.i("TAG", String.valueOf(questions.size()));
                             }
@@ -376,6 +389,11 @@ public class FormRegisterActivity extends AppCompatActivity {
                         questions.remove(position);
                         questionsAdapter.notifyDataSetChanged();
 
+                        if(questions.size() == 0){
+                            showEmptyQuestionListLayout();
+                            hideQuestionListLayout();
+                        }
+
                         break;
                     case 1:
 
@@ -420,5 +438,25 @@ public class FormRegisterActivity extends AppCompatActivity {
 
         // show it
         alertDialog.show();
+    }
+
+    private void showEmptyQuestionListLayout(){
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1.0f);
+        lEmptyQuestionList.setLayoutParams(params);
+    }
+
+    private void hideEmptyQuestionListLayout(){
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 0.0f);
+        lEmptyQuestionList.setLayoutParams(params);
+    }
+
+    private void showQuestionListLayout(){
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1.0f);
+        lQuestionList.setLayoutParams(params);
+    }
+
+    private void hideQuestionListLayout(){
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 0.0f);
+        lQuestionList.setLayoutParams(params);
     }
 }

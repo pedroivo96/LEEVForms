@@ -101,7 +101,9 @@ public class MyFormsActivity extends AppCompatActivity {
 
         mDatabaseForms
                 .child(prefs.getString(ConstantUtils.USER_FIELD_ID, ""))
-                .addValueEventListener(getUserForms());
+                .orderByChild(ConstantUtils.FORMS_FIELD_VISIBLE)
+                .equalTo(true)
+                .addListenerForSingleValueEvent(getUserForms());
     }
 
     private Context getContext(){
@@ -141,6 +143,7 @@ public class MyFormsActivity extends AppCompatActivity {
                     lForms.setAdapter(formsAdapter);
                 }
                 else{
+                    Log.i("TAG", "Sem resultados");
                     showNoFormsLayout();
                     notShowMyFormsLayout();
                 }
@@ -259,6 +262,10 @@ public class MyFormsActivity extends AppCompatActivity {
                         .child(prefs.getString(ConstantUtils.USER_FIELD_ID, ""))
                         .child(idForm)
                         .updateChildren(result);
+
+                mDatabaseForms
+                        .child(prefs.getString(ConstantUtils.USER_FIELD_ID, ""))
+                        .addListenerForSingleValueEvent(getUserForms());
                 //myStudents.remove(position);
 
             }

@@ -218,7 +218,6 @@ public class MyStudentsActivity extends AppCompatActivity {
                         Intent intent = new Intent(getContext(), StudentFormsActivity.class);
                         intent.putExtra("studentId", myStudents.get(position).getId());
                         startActivity(intent);
-
                         break;
                 }
             }

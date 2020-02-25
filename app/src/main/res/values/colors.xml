@@ -13,6 +13,8 @@
     <color name="primaryTextColor">#000000</color>
     <color name="secondaryTextColor">#ffffff</color>
 
+    <color name="backgroundColor">#cbcccc</color>
+    <color name="surfaceColor">#ffffff</color>
 
     <color name="primaryTextColorTransparent">#80000000</color>
 

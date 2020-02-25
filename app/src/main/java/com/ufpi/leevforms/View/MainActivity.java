@@ -44,13 +44,17 @@ public class MainActivity extends AppCompatActivity {
             //Há um usuário logado
             Log.i("TAG", currentUser.getEmail());
 
-            Intent intent = new Intent(getContext(), UserActivity.class);
-            startActivity(intent);
-            finish();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Intent start = new Intent(getContext(), UserActivity.class);
+                    startActivity(start);
+                    finish();
+                }
+            }, TIME_OUT);
         }
         else{
 
-            //Não há um usuário logado
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -59,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
                     finish();
                 }
             }, TIME_OUT);
-            finish();
         }
     }
 
