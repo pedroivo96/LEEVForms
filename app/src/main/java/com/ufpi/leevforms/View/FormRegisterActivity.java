@@ -100,7 +100,12 @@ public class FormRegisterActivity extends AppCompatActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
-                createAndShowQuestionsOptionsMenu(questions.get(position).getId(), position);
+                if(questions.get(position).getType() == ConstantUtils.QUESTION_TYPE_SUBJETIVE){
+                    createAndShowQuestionsOptionsMenu1(questions.get(position).getId(), position);
+                }
+                else{
+                    createAndShowQuestionsOptionsMenu(questions.get(position).getId(), position);
+                }
                 return true;
             }
         });
@@ -399,6 +404,46 @@ public class FormRegisterActivity extends AppCompatActivity {
 
                         //Adicionar opção de resposta
                         createAndShowNewAnswerOptionDialog(position);
+                        break;
+                }
+            }
+        });
+        builderSingle.show();
+    }
+
+    private void createAndShowQuestionsOptionsMenu1(final String idQuestion, final int position){
+
+        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), R.layout.dialog_list_textview, R.id.textView1);
+        arrayAdapter.add("Remover");
+
+        AlertDialog.Builder builderSingle = new AlertDialog.Builder(getContext());
+        builderSingle.setIcon(null);
+        builderSingle.setTitle("Menu");
+
+        builderSingle.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                String strName = arrayAdapter.getItem(which);
+
+                switch (which){
+                    case 0:
+                        //Remover
+                        questions.remove(position);
+                        questionsAdapter.notifyDataSetChanged();
+
+                        if(questions.size() == 0){
+                            showEmptyQuestionListLayout();
+                            hideQuestionListLayout();
+                        }
+
                         break;
                 }
             }

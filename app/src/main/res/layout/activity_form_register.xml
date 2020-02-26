@@ -34,7 +34,8 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="10dp"
-                    android:background="@color/surfaceColor">
+                    android:background="@color/surfaceColor"
+                    android:layout_marginBottom="10dp">
 
                     <android.support.design.widget.TextInputLayout
                         android:id="@+id/textInputLayoutName"
@@ -68,10 +69,18 @@
 
                     </android.support.design.widget.TextInputLayout>
 
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@color/surfaceColor"
+                    android:padding="10dp">
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
                         android:layout_marginBottom="10dp">
                         <TextView
                             android:layout_width="match_parent"
@@ -101,6 +110,7 @@
                             android:layout_height="match_parent"
                             android:id="@+id/lQuestions"/>
                     </LinearLayout>
+
                 </LinearLayout>
 
             </LinearLayout>

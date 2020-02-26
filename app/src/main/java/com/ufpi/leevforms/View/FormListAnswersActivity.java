@@ -17,8 +17,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -52,10 +54,17 @@ public class FormListAnswersActivity extends AppCompatActivity {
     private String formId;
 
     private AnswerAdapter answerAdapter;
+
+    private LinearLayout linearLayoutAnswersList;
+    private LinearLayout linearLayoutEmptyAnswersList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form_list_answers);
+
+        linearLayoutAnswersList = findViewById(R.id.linearLayoutAnswersList);
+        linearLayoutEmptyAnswersList = findViewById(R.id.linearLayoutEmptyAnswersList);
 
         formId = getIntent().getStringExtra(ConstantUtils.FORMS_FIELD_ID);
 
@@ -102,6 +111,10 @@ public class FormListAnswersActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
+
+                    showLinearLayoutAnswersList();
+                    hideLinearLayoutEmptyAnswersList();
+
                     for(DataSnapshot d : dataSnapshot.getChildren()){
 
                         Answer answer = new Answer();
@@ -118,6 +131,10 @@ public class FormListAnswersActivity extends AppCompatActivity {
 
                     answerAdapter = new AnswerAdapter(answers, getContext());
                     lAnswers.setAdapter(answerAdapter);
+                }
+                else{
+                    hideLinearLayoutAnswersList();
+                    showLinearLayoutEmptyAnswersList();
                 }
             }
 
@@ -254,5 +271,25 @@ public class FormListAnswersActivity extends AppCompatActivity {
         alerta = builder.create();
         //Exibe
         alerta.show();
+    }
+
+    private void showLinearLayoutAnswersList(){
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 10.0f);
+        linearLayoutAnswersList.setLayoutParams(params);
+    }
+
+    private void hideLinearLayoutAnswersList(){
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 0.0f);
+        linearLayoutAnswersList.setLayoutParams(params);
+    }
+
+    private void showLinearLayoutEmptyAnswersList(){
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 10.0f);
+        linearLayoutEmptyAnswersList.setLayoutParams(params);
+    }
+
+    private void hideLinearLayoutEmptyAnswersList(){
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 0.0f);
+        linearLayoutEmptyAnswersList.setLayoutParams(params);
     }
 }
